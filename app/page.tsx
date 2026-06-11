@@ -30,94 +30,40 @@ const audienceOptions = ['All audiences', 'Families', 'Organisations', 'Municipa
 const topicOptions = [
   'All topics',
   'Activities',
-  'Toolkits & templates',
-  'Inclusion & accessibility',
+  'Toolkits & Templates',
   'Event organisation',
-  'Online participation',
-  'Policy & advocacy',
-  'Evaluation',
+  'Policy & Advocacy',
 ];
 
 const resourceItems = [
   {
-    type: 'Activity cards',
-    topic: 'Activities',
-    title: 'Family Move & Play Activity Cards',
-    description: 'Fun, simple activities for families to move, play and connect together at home, outdoors or during community sport days.',
-    audiences: ['Families', 'Coaches'],
-    Icon: Activity,
-    tone: 'yellow',
-  },
-  {
-    type: 'Checklist',
-    topic: 'Event organisation',
-    title: 'Inclusive Family Sport Event Checklist',
-    description: 'A practical checklist to plan accessible, multilingual and intergenerational family sport activities.',
-    audiences: ['Organisations', 'Municipalities'],
-    Icon: ClipboardCheck,
-    tone: 'green',
-  },
-  {
-    type: 'Methodology',
-    topic: 'Inclusion & accessibility',
-    title: 'Participant Selection Criteria Model',
-    description: 'A model to support fair, transparent and inclusive participant selection, especially for socially at-risk families.',
-    audiences: ['Organisations', 'Municipalities', 'Policymakers'],
-    Icon: UsersRound,
-    tone: 'blue',
-  },
-  {
-    type: 'Coach brief',
-    topic: 'Inclusion & accessibility',
-    title: 'Coach Brief: Working with Families',
-    description: 'Key principles and tips for coaches and mentors engaging children, parents and grandparents together.',
-    audiences: ['Coaches', 'Organisations'],
-    Icon: ShieldCheck,
-    tone: 'blue',
-  },
-  {
-    type: 'Policy brief',
-    topic: 'Policy & advocacy',
-    title: 'Policy Brief: Family Sport as Social Inclusion',
-    description: 'Evidence and recommendations to strengthen inclusive family sport policy and local community practice.',
+    type: 'Policy note',
+    topics: ['Policy & Advocacy'],
+    title: 'Policy Note',
+    description: 'Policy-oriented recommendations and evidence from the BeActive Beach Games model, supporting inclusive and active communities.',
     audiences: ['Policymakers', 'Municipalities'],
+    file: '/resources/policy-note.pdf',
     Icon: FileText,
     tone: 'yellow',
   },
   {
-    type: 'Toolkit',
-    topic: 'Toolkits & templates',
-    title: 'Home & Heart Festival Replication Toolkit',
-    description: 'Tools and templates for organisations, clubs and municipalities to adapt the festival model locally.',
-    audiences: ['Organisations', 'Municipalities', 'Policymakers'],
-    Icon: Wrench,
-    tone: 'green',
-  },
-  {
-    type: 'Video archive',
-    topic: 'Online participation',
-    title: 'Festival Recordings and Expert Sessions',
-    description: 'A future archive for livestream recordings, expert talks, family stories and coach-led demonstrations.',
+    type: 'Guide',
+    topics: ['Activities', 'Toolkits & Templates'],
+    title: 'Physical Activity Guide',
+    description: 'Practical beach sport and physical activity ideas that can be adapted for families, coaches and sport organisations.',
     audiences: ['Families', 'Coaches', 'Organisations'],
-    Icon: PlayCircle,
+    file: '/resources/physical-activity-guide.pdf',
+    Icon: Activity,
     tone: 'blue',
   },
   {
-    type: 'Template',
-    topic: 'Evaluation',
-    title: 'Participant Feedback Survey Template',
-    description: 'Ready-to-adapt questions for collecting feedback, learning outcomes and post-event engagement data.',
+    type: 'Event guide',
+    topics: ['Event organisation', 'Toolkits & Templates'],
+    title: 'Event Organisation Guide',
+    description: 'Step-by-step guidance for planning, coordinating, implementing and evaluating inclusive sport events.',
     audiences: ['Organisations', 'Municipalities'],
-    Icon: CheckCircle2,
-    tone: 'yellow',
-  },
-  {
-    type: 'Impact resource',
-    topic: 'Evaluation',
-    title: 'Digital Reach and Online Engagement Tracker',
-    description: 'A simple structure for tracking Hub visits, downloads, video views, feedback and online participation after the festival.',
-    audiences: ['Organisations', 'Municipalities', 'Policymakers'],
-    Icon: MonitorPlay,
+    file: '/resources/event-organisation-guide.pdf',
+    Icon: ClipboardCheck,
     tone: 'green',
   },
 ];
@@ -211,12 +157,12 @@ export default function Page() {
   const filteredResources = useMemo(() => {
     const q = query.trim().toLowerCase();
     return resourceItems.filter((resource) => {
-      const matchesQuery = !q || [resource.title, resource.description, resource.type, resource.topic, ...resource.audiences]
+      const matchesQuery = !q || [resource.title, resource.description, resource.type, ...resource.topics, ...resource.audiences]
         .join(' ')
         .toLowerCase()
         .includes(q);
       const matchesAudience = audience === 'All audiences' || resource.audiences.includes(audience);
-      const matchesTopic = topic === 'All topics' || resource.topic === topic;
+      const matchesTopic = topic === 'All topics' || resource.topics.includes(topic);
       return matchesQuery && matchesAudience && matchesTopic;
     });
   }, [query, audience, topic]);
@@ -334,16 +280,16 @@ export default function Page() {
               {filteredResources.map((resource) => {
                 const Icon = resource.Icon;
                 return (
-                  <article className="resource-card" key={resource.title}>
+                  <a className="resource-card" href={resource.file} target="_blank" rel="noopener noreferrer" key={resource.title} aria-label={`Open ${resource.title}`}>
                     <div className={`resource-visual ${resource.tone}`}><Icon size={44}/></div>
                     <div className="resource-body">
-                      <div className="resource-tags"><span>{resource.type}</span><span>{resource.topic}</span></div>
+                      <div className="resource-tags"><span>{resource.type}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}</div>
                       <h3>{resource.title}</h3>
                       <p>{resource.description}</p>
                       <div className="audience-tags">{resource.audiences.map(tag => <em key={tag}>{tag}</em>)}</div>
                     </div>
                     <ChevronRight className="resource-arrow" size={24}/>
-                  </article>
+                  </a>
                 );
               })}
             </div>
