@@ -49,8 +49,8 @@ h1 { margin: 18px 0 16px; font-size: clamp(42px, 6.2vw, 74px); line-height: .95;
 .round-icon.tent { background: linear-gradient(145deg, #0a76b3, #064f84); }
 .about-panel h2, .festival-panel h2, .library-heading h2 { margin:0; font-size: clamp(28px, 3vw, 38px); line-height:1.05; color: var(--deep); letter-spacing:-.03em; }
 .yellow-line { width: 96px; height:5px; background: var(--yellow); border-radius:999px; margin-top:10px; }
-.about-panel p { position:relative; z-index:1; max-width: 530px; color:#173750; font-size: 17px; line-height:1.55; }
-.mini-graphic { position:absolute; z-index:1; right: 54px; bottom: 44px; display:flex; gap:12px; color: var(--blue); }
+.about-panel p { position:relative; z-index:1; max-width: none; color:#173750; font-size: 17px; line-height:1.55; }
+.mini-graphic { position:relative; z-index:1; display:flex; gap:12px; color: var(--blue); margin-top: 22px; }
 .mini-graphic svg { background:white; padding:8px; border-radius:14px; box-shadow: 0 10px 24px rgba(7,63,103,.12); width:58px; height:58px; }
 .festival-panel { background: linear-gradient(180deg, #f2fbff, #ffffff); }
 .festival-topline { justify-content:space-between; align-items:flex-start; }

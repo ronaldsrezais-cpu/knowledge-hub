@@ -1,8 +1,8 @@
-GITHUB UPLOAD CHECKLIST
+UPLOAD CHECKLIST
 
-Upload ONLY the extracted contents of this ZIP to the repository root.
+Upload the extracted contents of this ZIP directly to the root of your GitHub repository.
 
-The repository root must contain exactly these project files/folders:
+The repository root SHOULD contain:
 - app/
 - public/
 - package.json
@@ -12,20 +12,23 @@ The repository root must contain exactly these project files/folders:
 - .npmrc
 - .gitignore
 
-The repository root must NOT contain:
+The repository root SHOULD NOT contain:
+- root-level layout.tsx
+- root-level page.tsx
+- root-level globals.css
 - package-lock.json
-- node_modules/
-- .next/
-- layout.tsx
-- page.tsx
-- globals.css
-- any PNG/JPG files directly at root
+- any PNG/JPG/SVG files at root
 
-EU logo location:
-- public/visuals/eu-co-funded.png
+Important checks in GitHub:
+- package.json must be readable JSON text starting with "{"
+- tsconfig.json must be readable JSON text starting with "{"
+- EU logo must be in public/visuals/eu-co-funded.png
 
-Critical checks in GitHub after upload:
-- Clicking package.json must show readable JSON text beginning with {.
-- Clicking tsconfig.json must show readable JSON text beginning with {.
-- app/layout.tsx must contain React/Next code, NOT CSS.
-- app/globals.css may start with :root { ... }.
+Vercel deploy settings:
+- Framework preset: Next.js
+- Root directory: empty
+- Output directory: empty
+- Install command: npm install --legacy-peer-deps --no-audit --no-fund
+- Build command: npm run build
+
+After uploading, redeploy without build cache if Vercel previously failed.

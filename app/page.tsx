@@ -235,7 +235,6 @@ export default function Page() {
           <nav className="navlinks" aria-label="Main navigation">
             <a href="#library">Library</a>
             <a href="#tools">Activity generator</a>
-            <a href="#festival">Festival</a>
           </nav>
         </div>
       </header>
@@ -249,7 +248,6 @@ export default function Page() {
             <div className="hero-actions">
               <a className="btn primary" href="#library"><BookOpen size={18}/> Explore resources</a>
               <a className="btn secondary" href="#tools"><HeartHandshake size={18}/> Try activity generator</a>
-              <a className="btn secondary" href="#festival"><CalendarDays size={18}/> Festival information</a>
             </div>
           </div>
 
@@ -264,7 +262,7 @@ export default function Page() {
                   <div><h2>About the Hub</h2><div className="yellow-line" /></div>
                 </div>
                 <p>The Home & Heart Digital Knowledge Hub is part of the Home & Heart project.</p>
-                <p>It will provide resources developed throughout the project, including materials emerging from the pilot event — the European Family Festival — alongside additional tools, guides and learning materials relevant for families, sport organisations, municipalities, partners and other target groups.</p>
+                <p>The Hub provides resources developed throughout the project, including materials emerging from the pilot event — the European Family Festival — alongside additional tools, guides and learning materials relevant for families, sport organisations, municipalities, partners and other target groups. It also serves as a place for materials from other initiatives.</p>
                 <div className="mini-graphic" aria-hidden="true">
                   <MonitorPlay size={42}/><FileText size={42}/><CheckCircle2 size={42}/>
                 </div>
@@ -279,7 +277,7 @@ export default function Page() {
                   <div className="countdown-box">
                     <span>Event starts in</span>
                     <strong>{countdown}</strong>
-                    <b>days to go</b>
+                    <b>days</b>
                   </div>
                   <div className="festival-details">
                     <p><CalendarDays size={19}/><strong>Date:</strong> 22 August 2026</p>
