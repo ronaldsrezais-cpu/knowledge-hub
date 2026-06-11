@@ -94,6 +94,7 @@ h1 { margin: 18px 0 16px; font-size: clamp(42px, 6.2vw, 74px); line-height: .95;
 .resource-visual.blue { background: linear-gradient(145deg, var(--blue), #56c5ed); }
 .resource-visual.green { background: linear-gradient(145deg, var(--green), #8ed98f); }
 .resource-visual.yellow { background: linear-gradient(145deg, var(--yellow), #ffe98f); color:var(--deep); }
+.resource-visual.orange { background: linear-gradient(145deg, #ff8a00, #ffd08a); color:white; }
 .resource-tags { display:flex; flex-wrap:wrap; gap:6px; }
 .resource-tags span, .audience-tags em { font-style:normal; display:inline-block; padding:5px 9px; border-radius:999px; background:#eef9fd; color:var(--blue); font-size:12px; font-weight:900; }
 .audience-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
