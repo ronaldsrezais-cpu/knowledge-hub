@@ -1,0 +1,31 @@
+GITHUB UPLOAD CHECKLIST
+
+Upload ONLY the extracted contents of this ZIP to the repository root.
+
+The repository root must contain exactly these project files/folders:
+- app/
+- public/
+- package.json
+- tsconfig.json
+- next-env.d.ts
+- README.md
+- .npmrc
+- .gitignore
+
+The repository root must NOT contain:
+- package-lock.json
+- node_modules/
+- .next/
+- layout.tsx
+- page.tsx
+- globals.css
+- any PNG/JPG files directly at root
+
+EU logo location:
+- public/visuals/eu-co-funded.png
+
+Critical checks in GitHub after upload:
+- Clicking package.json must show readable JSON text beginning with {.
+- Clicking tsconfig.json must show readable JSON text beginning with {.
+- app/layout.tsx must contain React/Next code, NOT CSS.
+- app/globals.css may start with :root { ... }.
