@@ -398,6 +398,28 @@ export default function Page() {
             <h2>Home & Heart Digital Knowledge Hub</h2>
             <p>Developed as an open-access digital platform for inclusive family sport, online engagement, learning resources and long-term replication.</p>
           </div>
+
+          <div className="partner-visibility" aria-label="Coordinator and partners">
+            <div className="partner-block coordinator-block">
+              <span className="partner-label">Coordinator</span>
+              <div className="logo-card coordinator-card">
+                <img src="/visuals/partners/lsfp.png" alt="Latvian Sports Federations Council logo" />
+              </div>
+            </div>
+            <div className="partner-block">
+              <span className="partner-label">Partners</span>
+              <div className="partner-logo-grid">
+                <div className="logo-card"><img src="/visuals/partners/sul-finnish-athletics.png" alt="Finnish Athletics logo" /></div>
+                <div className="logo-card"><img src="/visuals/partners/lasv.png" alt="Lithuanian Association Sport for All logo" /></div>
+                <div className="logo-card"><img src="/visuals/partners/opes.png" alt="OPES logo" /></div>
+                <div className="logo-card"><img src="/visuals/partners/ufec.png" alt="Union of Sports Federations of Catalonia logo" /></div>
+                <div className="logo-card dark-card"><img src="/visuals/partners/daddyhood.png" alt="DaddyHood logo" /></div>
+                <div className="logo-card"><img src="/visuals/partners/favrholm.png" alt="Favrholm IK logo" /></div>
+                <div className="logo-card"><img src="/visuals/partners/vh-sport.png" alt="VH Sport logo" /></div>
+              </div>
+            </div>
+          </div>
+
           <div className="eu-visibility" aria-label="European Union funding visibility">
             <img src="/visuals/eu-co-funded.png" alt="Co-funded by the European Union" />
             <p>Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them.</p>
