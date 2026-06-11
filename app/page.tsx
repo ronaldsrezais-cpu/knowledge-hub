@@ -261,8 +261,8 @@ export default function Page() {
                   <span className="round-icon"><BookOpen size={30}/></span>
                   <div><h2>About the Hub</h2><div className="yellow-line" /></div>
                 </div>
-                <p>The Home & Heart Digital Knowledge Hub is part of the Home & Heart project.</p>
-                <p>The Hub provides resources developed throughout the project, including materials emerging from the pilot event — the European Family Festival — alongside additional tools, guides and learning materials relevant for families, sport organisations, municipalities, partners and other target groups. It also serves as a place for materials from other initiatives.</p>
+                <p>The Home & Heart Digital Knowledge Hub is part of the Erasmus+ Sport project - Home & Heart: European Family Festival.</p>
+                <p>The Hub provides resources developed throughout the project, including materials emerging from the pilot event — the European Family Festival — alongside additional tools, guides and learning materials relevant for families, sport organisations, municipalities, partners and other target groups. In long-term it will also serve as a place for materials from other initiatives.</p>
                 <div className="mini-graphic" aria-hidden="true">
                   <MonitorPlay size={42}/><FileText size={42}/><CheckCircle2 size={42}/>
                 </div>
@@ -394,11 +394,6 @@ export default function Page() {
 
       <footer className="footer eu-footer">
         <div className="container eu-footer-inner">
-          <div className="footer-main">
-            <h2>Home & Heart Digital Knowledge Hub</h2>
-            <p>Developed as an open-access digital platform for inclusive family sport, online engagement, learning resources and long-term replication.</p>
-          </div>
-
           <div className="partner-visibility" aria-label="Coordinator and partners">
             <div className="partner-block coordinator-block">
               <span className="partner-label">Coordinator</span>

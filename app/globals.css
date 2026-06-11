@@ -160,9 +160,6 @@ select, input, textarea { width:100%; padding: 13px 14px; border:1px solid var(-
   gap: 22px;
 }
 
-.footer-main p {
-  max-width: 820px;
-}
 
 .eu-visibility {
   display: grid;
