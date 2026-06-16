@@ -320,11 +320,16 @@ select, input, textarea { width:100%; padding: 13px 14px; border:1px solid var(-
 .compact-btn { white-space:nowrap; }
 .submit-section { background:linear-gradient(180deg, #fff, #f6fcff); border-top:1px solid var(--border); }
 .submit-layout { display:grid; grid-template-columns: .85fr 1.35fr; gap:22px; align-items:start; }
-.submit-intro h3 { margin:10px 0; color:var(--deep); font-size:clamp(28px, 3vw, 40px); letter-spacing:-.03em; }
-.review-note { display:flex; gap:12px; align-items:flex-start; background:#eef9fd; border:1px solid rgba(7,137,200,.18); padding:14px; border-radius:18px; margin:18px 0; color:var(--deep); }
+.submit-intro.panel:after { z-index:0; }
+.submit-intro > * { position:relative; z-index:1; }
+.submit-intro .kicker { background:rgba(255,255,255,.16); color:white; }
+.submit-intro h3 { margin:10px 0; color:white; font-size:clamp(28px, 3vw, 40px); letter-spacing:-.03em; }
+.submit-intro > p { color:rgba(255,255,255,.9); }
+.review-note { display:flex; gap:12px; align-items:flex-start; background:#f4fbff; border:1px solid rgba(7,137,200,.18); padding:14px; border-radius:18px; margin:18px 0; color:var(--deep); }
 .review-note svg { flex:0 0 auto; color:var(--blue); margin-top:2px; }
-.review-note p { margin:0; }
-.small-note { color:var(--muted); font-size:14px; line-height:1.5; }
+.submit-intro .review-note p { margin:0; color:var(--deep); }
+.submit-intro .review-note strong { color:var(--deep); }
+.submit-intro .small-note { color:rgba(255,255,255,.9); font-size:14px; line-height:1.5; }
 .submission-form { background:white; border:1px solid rgba(7,137,200,.18); border-radius:28px; padding:24px; box-shadow:0 20px 50px rgba(7,63,103,.08); }
 .submission-form label, .submission-form legend { color:var(--deep); font-weight:900; font-size:14px; }
 .submission-form input, .submission-form textarea, .submission-form select { width:100%; margin-top:7px; border:1px solid rgba(7,137,200,.22); border-radius:15px; padding:12px 13px; background:#fafdff; color:var(--ink); outline:none; font:inherit; }

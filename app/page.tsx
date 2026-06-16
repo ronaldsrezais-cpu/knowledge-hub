@@ -765,7 +765,7 @@ export default function Page() {
               <ShieldCheck size={22}/>
               <p><strong>Review before publication:</strong> submitted materials will be reviewed by the Home & Heart project team before they are uploaded to the Resource Library.</p>
             </div>
-            <p className="small-note">The submission will be sent to <strong>ronalds.rezais@lsfp.lv</strong>. For large videos or photo galleries, please add a public link instead of uploading a large file.</p>
+            <p className="small-note">For large videos or photo galleries, please add a public link instead of uploading a large file.</p>
           </div>
 
           <form className="submission-form" onSubmit={handleMaterialSubmit}>
