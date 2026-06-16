@@ -572,6 +572,11 @@ export default function Page() {
     }
   };
 
+  const printActivityCard = () => {
+    window.print();
+  };
+
+
   return (
     <main>
       <header className="topbar">
@@ -748,9 +753,25 @@ export default function Page() {
             </div>
             <div className="activity-actions">
               <button type="button" onClick={() => setIdeaIndex((value) => value + 1)}><RotateCcw size={16}/> Generate another idea</button>
-              <button type="button" onClick={() => window.print()}><Download size={16}/> Print / save activity card</button>
+              <button type="button" onClick={printActivityCard}><Download size={16}/> Print activity card</button>
             </div>
           </div>
+          <article className="print-activity-card" aria-hidden="true">
+            <span className="print-badge">Generated activity card</span>
+            <h1>{activity.title}</h1>
+            <div className="print-meta"><span>{activity.duration}</span><span>{activity.bestFor}</span><span>{activity.intensity} intensity</span></div>
+            <p><strong>Goal:</strong> {activity.goal}</p>
+            <p><strong>Equipment:</strong> {activity.equipment}</p>
+            <h2>How to play</h2>
+            <ol>{activity.steps.map(step => <li key={step}>{step}</li>)}</ol>
+            <div className="print-adapt">
+              <p><strong>Make it easier:</strong> {activity.easier}</p>
+              <p><strong>Make it harder:</strong> {activity.harder}</p>
+              <p><strong>Inclusive adaptation:</strong> {activity.adaptation}</p>
+              <p><strong>Safety note:</strong> {activity.safety}</p>
+            </div>
+            <p className="print-source">Generated based on materials available in the Resource Library.</p>
+          </article>
         </div>
       </section>
 
