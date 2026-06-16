@@ -673,6 +673,7 @@ export default function Page() {
               <label>Accessibility<select value={accessibility} onChange={e => { setAccessibility(e.target.value); setIdeaIndex(0); }}><option value="mixed">Mixed abilities</option><option value="low">Limited mobility</option><option value="wheelchair">Wheelchair-friendly</option><option value="sensory">Sensory-friendly</option><option value="norunning">No running / low impact</option><option value="younger">Younger children</option><option value="large">Large group</option><option value="outdoor">Outdoor/weather adaptable</option></select></label>
               <label>Intensity<select value={intensity} onChange={e => { setIntensity(e.target.value); setIdeaIndex(0); }}><option>Very low</option><option>Low</option><option>Medium</option><option>Active</option><option>High-energy</option></select></label>
             </div>
+            <p className="generator-source-note"><BookOpen size={18}/> These activities are generated based on the materials available in the Resource Library.</p>
           </div>
           <div className="result activity-card-output">
             <span className="badge">Generated activity card</span>
@@ -717,6 +718,8 @@ export default function Page() {
                 <div className="logo-card dark-card"><img src="/visuals/partners/daddyhood.png" alt="DaddyHood logo" /></div>
                 <div className="logo-card"><img src="/visuals/partners/favrholm.png" alt="Favrholm IK logo" /></div>
                 <div className="logo-card"><img src="/visuals/partners/vh-sport.png" alt="VH Sport logo" /></div>
+                <div className="logo-card"><img src="/visuals/partners/firmasport.png" alt="FirmaSport logo" /></div>
+                <div className="logo-card"><img src="/visuals/partners/hungarian-charity-service-malta.png" alt="Hungarian Charity Service of the Order of Malta logo" /></div>
               </div>
             </div>
           </div>
