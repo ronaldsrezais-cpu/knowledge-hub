@@ -43,8 +43,7 @@ const resourceItems = [
     description: 'Policy-oriented recommendations and evidence from the BeActive Beach Games model, supporting inclusive and active communities.',
     audiences: ['Policymakers', 'Municipalities'],
     file: '/resources/policy-note.pdf',
-    Icon: FileText,
-    tone: 'yellow',
+    image: '/visuals/resource-covers/policy-note.jpg',
   },
   {
     type: 'Guide',
@@ -53,8 +52,7 @@ const resourceItems = [
     description: 'Practical beach sport and physical activity ideas that can be adapted for families, coaches and sport organisations.',
     audiences: ['Families', 'Coaches', 'Organisations'],
     file: '/resources/physical-activity-guide.pdf',
-    Icon: Activity,
-    tone: 'blue',
+    image: '/visuals/resource-covers/physical-activity-guide.jpg',
   },
   {
     type: 'Event guide',
@@ -63,8 +61,7 @@ const resourceItems = [
     description: 'Step-by-step guidance for planning, coordinating, implementing and evaluating inclusive sport events.',
     audiences: ['Organisations', 'Municipalities'],
     file: '/resources/event-organisation-guide.pdf',
-    Icon: ClipboardCheck,
-    tone: 'green',
+    image: '/visuals/resource-covers/event-organisation-guide.jpg',
   },
   {
     type: 'Activity booklet',
@@ -73,8 +70,7 @@ const resourceItems = [
     description: 'Ready-to-use family games, relays, station formats, scoring ideas and practical set-up guidance for schools, families and organisations.',
     audiences: ['Families', 'Coaches', 'Organisations'],
     file: '/resources/family-activity-booklet.pdf',
-    Icon: HeartHandshake,
-    tone: 'orange',
+    image: '/visuals/resource-covers/family-activity-booklet.jpg',
   },
 ];
 
@@ -641,10 +637,11 @@ export default function Page() {
 
             <div className="resource-grid">
               {filteredResources.map((resource) => {
-                const Icon = resource.Icon;
                 return (
                   <a className="resource-card" href={resource.file} target="_blank" rel="noopener noreferrer" key={resource.title} aria-label={`Open ${resource.title}`}>
-                    <div className={`resource-visual ${resource.tone}`}><Icon size={44}/></div>
+                    <div className="resource-visual resource-cover-wrap">
+                      <img className="resource-cover" src={resource.image} alt={`${resource.title} cover`} />
+                    </div>
                     <div className="resource-body">
                       <div className="resource-tags"><span>{resource.type}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}</div>
                       <h3>{resource.title}</h3>
