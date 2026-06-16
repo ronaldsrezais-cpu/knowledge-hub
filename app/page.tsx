@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
 import {
   Activity,
   BookOpen,
@@ -18,9 +18,11 @@ import {
   Radio,
   RotateCcw,
   Search,
+  Send,
   ShieldCheck,
   Sparkles,
   Tent,
+  UploadCloud,
   UsersRound,
   Wrench,
   X,
@@ -34,6 +36,7 @@ const topicOptions = [
   'Event organisation',
   'Policy & Advocacy',
 ];
+const typeOptions = ['All types', 'Document', 'Video', 'Photos'];
 
 const resourceItems = [
   {
@@ -42,6 +45,7 @@ const resourceItems = [
     title: 'Policy Note',
     description: 'Policy-oriented recommendations and evidence from the BeActive Beach Games model, supporting inclusive and active communities.',
     audiences: ['Policymakers', 'Municipalities'],
+    resourceType: 'Document',
     file: '/resources/policy-note.pdf',
     image: '/visuals/resource-covers/policy-note.jpg',
   },
@@ -51,6 +55,7 @@ const resourceItems = [
     title: 'Physical Activity Guide',
     description: 'Practical beach sport and physical activity ideas that can be adapted for families, coaches and sport organisations.',
     audiences: ['Families', 'Coaches', 'Organisations'],
+    resourceType: 'Document',
     file: '/resources/physical-activity-guide.pdf',
     image: '/visuals/resource-covers/physical-activity-guide.jpg',
   },
@@ -60,6 +65,7 @@ const resourceItems = [
     title: 'Event Organisation Guide',
     description: 'Step-by-step guidance for planning, coordinating, implementing and evaluating inclusive sport events.',
     audiences: ['Organisations', 'Municipalities'],
+    resourceType: 'Document',
     file: '/resources/event-organisation-guide.pdf',
     image: '/visuals/resource-covers/event-organisation-guide.jpg',
   },
@@ -69,6 +75,7 @@ const resourceItems = [
     title: 'Family Activity Booklet',
     description: 'Ready-to-use family games, relays, station formats, scoring ideas and practical set-up guidance for schools, families and organisations.',
     audiences: ['Families', 'Coaches', 'Organisations'],
+    resourceType: 'Document',
     file: '/resources/family-activity-booklet.pdf',
     image: '/visuals/resource-covers/family-activity-booklet.jpg',
   },
@@ -499,6 +506,9 @@ export default function Page() {
   const [query, setQuery] = useState('');
   const [audience, setAudience] = useState('All audiences');
   const [topic, setTopic] = useState('All topics');
+  const [resourceType, setResourceType] = useState('All types');
+  const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [submissionMessage, setSubmissionMessage] = useState('');
 
   const [members, setMembers] = useState('Mixed generations');
   const [people, setPeople] = useState('4-5');
@@ -516,20 +526,50 @@ export default function Page() {
   const filteredResources = useMemo(() => {
     const q = query.trim().toLowerCase();
     return resourceItems.filter((resource) => {
-      const matchesQuery = !q || [resource.title, resource.description, resource.type, ...resource.topics, ...resource.audiences]
+      const matchesQuery = !q || [resource.title, resource.description, resource.type, resource.resourceType, ...resource.topics, ...resource.audiences]
         .join(' ')
         .toLowerCase()
         .includes(q);
       const matchesAudience = audience === 'All audiences' || resource.audiences.includes(audience);
       const matchesTopic = topic === 'All topics' || resource.topics.includes(topic);
-      return matchesQuery && matchesAudience && matchesTopic;
+      const matchesType = resourceType === 'All types' || resource.resourceType === resourceType;
+      return matchesQuery && matchesAudience && matchesTopic && matchesType;
     });
-  }, [query, audience, topic]);
+  }, [query, audience, topic, resourceType]);
 
   const clearFilters = () => {
     setQuery('');
     setAudience('All audiences');
     setTopic('All topics');
+    setResourceType('All types');
+  };
+
+  const handleMaterialSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+
+    setSubmissionStatus('sending');
+    setSubmissionMessage('');
+
+    try {
+      const response = await fetch('/api/submit-material', {
+        method: 'POST',
+        body: data,
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result.error || 'The submission could not be sent. Please try again later.');
+      }
+
+      form.reset();
+      setSubmissionStatus('success');
+      setSubmissionMessage('Thank you! Your material has been submitted for review. It will be assessed before being added to the Resource Library.');
+    } catch (error) {
+      setSubmissionStatus('error');
+      setSubmissionMessage(error instanceof Error ? error.message : 'The submission could not be sent. Please try again later.');
+    }
   };
 
   return (
@@ -540,6 +580,7 @@ export default function Page() {
           <nav className="navlinks" aria-label="Main navigation">
             <a href="#library">Library</a>
             <a href="#tools">Activity generator</a>
+            <a href="#submit-materials">Submit material</a>
           </nav>
         </div>
       </header>
@@ -613,7 +654,7 @@ export default function Page() {
             <div className="search-filter-card compact-filters" aria-label="Resource search and filters">
               <label className="searchbox">
                 <Search size={20}/>
-                <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search resources by keyword, topic or audience…" />
+                <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search resources by keyword, topic, audience or type…" />
               </label>
               <div className="dropdown-filters">
                 <label>
@@ -626,6 +667,12 @@ export default function Page() {
                   <span>Topic</span>
                   <select value={topic} onChange={(e) => setTopic(e.target.value)}>
                     {topicOptions.map((item) => <option key={item}>{item}</option>)}
+                  </select>
+                </label>
+                <label>
+                  <span>Type</span>
+                  <select value={resourceType} onChange={(e) => setResourceType(e.target.value)}>
+                    {typeOptions.map((item) => <option key={item}>{item}</option>)}
                   </select>
                 </label>
                 <div className="filter-meta compact-meta">
@@ -643,7 +690,7 @@ export default function Page() {
                       <img className="resource-cover" src={resource.image} alt={`${resource.title} cover`} />
                     </div>
                     <div className="resource-body">
-                      <div className="resource-tags"><span>{resource.type}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}</div>
+                      <div className="resource-tags"><span>{resource.resourceType}</span><span>{resource.type}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}</div>
                       <h3>{resource.title}</h3>
                       <p>{resource.description}</p>
                       <div className="audience-tags">{resource.audiences.map(tag => <em key={tag}>{tag}</em>)}</div>
@@ -652,6 +699,14 @@ export default function Page() {
                   </a>
                 );
               })}
+            </div>
+
+            <div className="submit-callout">
+              <div>
+                <strong>Have a useful family sport or physical activity material?</strong>
+                <p>Organisations can submit documents, videos or photo materials for review by the Home & Heart project team.</p>
+              </div>
+              <a className="btn primary compact-btn" href="#submit-materials"><UploadCloud size={18}/> Submit your material</a>
             </div>
           </div>
         </div>
@@ -696,6 +751,66 @@ export default function Page() {
               <button type="button" onClick={() => window.print()}><Download size={16}/> Print / save activity card</button>
             </div>
           </div>
+        </div>
+      </section>
+
+
+      <section id="submit-materials" className="section submit-section">
+        <div className="container submit-layout">
+          <div className="submit-intro panel">
+            <span className="kicker"><UploadCloud size={16}/> Share resources</span>
+            <h3>Submit your material</h3>
+            <p>Organisations are invited to submit relevant family sport, physical activity, inclusion or event organisation materials for possible publication in the Resource Library.</p>
+            <div className="review-note">
+              <ShieldCheck size={22}/>
+              <p><strong>Review before publication:</strong> submitted materials will be reviewed by the Home & Heart project team before they are uploaded to the Resource Library.</p>
+            </div>
+            <p className="small-note">The submission will be sent to <strong>ronalds.rezais@lsfp.lv</strong>. For large videos or photo galleries, please add a public link instead of uploading a large file.</p>
+          </div>
+
+          <form className="submission-form" onSubmit={handleMaterialSubmit}>
+            <div className="form-row two">
+              <label>Organisation name<input name="organisation" required placeholder="Organisation name" /></label>
+              <label>Contact person<input name="contactPerson" required placeholder="Name and surname" /></label>
+            </div>
+            <div className="form-row two">
+              <label>Email<input name="contactEmail" type="email" required placeholder="name@example.eu" /></label>
+              <label>Material title<input name="materialTitle" required placeholder="Title of the submitted material" /></label>
+            </div>
+            <label>Short description<textarea name="description" required rows={4} placeholder="Briefly describe what the material is about and how it can support family sport or physical activity." /></label>
+
+            <div className="form-row two">
+              <fieldset>
+                <legend>Target audience</legend>
+                <div className="check-grid">
+                  {['Families', 'Coaches', 'Organisations', 'Municipalities', 'Policymakers'].map(item => (
+                    <label key={item}><input type="checkbox" name="audiences" value={item} /> {item}</label>
+                  ))}
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Topic</legend>
+                <div className="check-grid">
+                  {['Activities', 'Toolkits & Templates', 'Event organisation', 'Policy & Advocacy'].map(item => (
+                    <label key={item}><input type="checkbox" name="topics" value={item} /> {item}</label>
+                  ))}
+                </div>
+              </fieldset>
+            </div>
+
+            <div className="form-row two">
+              <label>Material type<select name="materialType" required defaultValue="Document"><option>Document</option><option>Video</option><option>Photos</option></select></label>
+              <label>Upload file<input name="materialFile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.mp4,.mov,.zip" /></label>
+            </div>
+            <label>Link to material, video or photo gallery<input name="materialLink" type="url" placeholder="https://..." /></label>
+
+            <label className="consent-line"><input name="reviewConsent" type="checkbox" required /> I understand that the material will be reviewed before it is published in the Resource Library.</label>
+
+            <button className="btn primary submit-btn" type="submit" disabled={submissionStatus === 'sending'}>
+              <Send size={18}/>{submissionStatus === 'sending' ? 'Sending submission...' : 'Submit for review'}
+            </button>
+            {submissionMessage && <p className={`submission-message ${submissionStatus}`}>{submissionMessage}</p>}
+          </form>
         </div>
       </section>
 

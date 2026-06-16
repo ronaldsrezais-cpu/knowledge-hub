@@ -32,3 +32,9 @@ Vercel deploy settings:
 - Build command: npm run build
 
 After uploading, redeploy without build cache if Vercel previously failed.
+
+Material submission form setup:
+- Add RESEND_API_KEY in Vercel environment variables.
+- Add SUBMISSION_FROM_EMAIL in Vercel environment variables. This should be a verified sender in Resend.
+- Optional: add SUBMISSION_TO_EMAIL=ronalds.rezais@lsfp.lv . If omitted, the code uses this email by default.
+- Redeploy after adding environment variables.
