@@ -491,7 +491,7 @@ function generateActivity(input: ActivityInput, ideaIndex = 0) {
     goal: template.summary,
     equipment: equipmentText,
     steps: [
-      `Prepare a safe ${input.location} space and explain that the aim is participation, cooperation and fun.`,
+      `Prepare a safe activity area and explain that the aim is participation, cooperation and fun.`,
       ...template.steps,
       `${durationNote} ${peopleNote}`,
     ],
@@ -572,8 +572,73 @@ export default function Page() {
     }
   };
 
+  const escapeHtml = (value: string) => value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
   const printActivityCard = () => {
-    window.print();
+    const printWindow = window.open('', '_blank', 'width=900,height=720');
+
+    if (!printWindow) {
+      window.print();
+      return;
+    }
+
+    const steps = activity.steps.map(step => `<li>${escapeHtml(step)}</li>`).join('');
+    const activityHtml = `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(activity.title)} | Activity card</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px; background: #ffffff; color: #073f67; font-family: Arial, Helvetica, sans-serif; }
+    .card { max-width: 860px; margin: 0 auto; border: 1px solid #cbe9f7; border-radius: 22px; padding: 28px; }
+    .badge, .meta span { display: inline-block; background: #eef9fd; color: #0789c8; border-radius: 999px; font-weight: 800; font-size: 12px; padding: 6px 10px; }
+    h1 { margin: 12px 0 12px; font-size: 30px; line-height: 1.15; color: #073f67; }
+    h2 { margin: 20px 0 8px; font-size: 18px; color: #073f67; }
+    p, li { color: #335b78; font-size: 14px; line-height: 1.5; }
+    strong { color: #073f67; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 18px; }
+    ol { padding-left: 20px; margin: 8px 0 16px; }
+    .adapt { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+    .adapt p { border: 1px solid #cbe9f7; border-radius: 14px; padding: 12px; margin: 0; background: #f7fcff; }
+    .source { margin-top: 18px; padding-top: 12px; border-top: 1px solid #cbe9f7; font-size: 12px; color: #5a748a; }
+    @media print { body { padding: 0; } .card { border: none; border-radius: 0; padding: 0; max-width: none; } }
+  </style>
+</head>
+<body>
+  <article class="card">
+    <span class="badge">Generated activity card</span>
+    <h1>${escapeHtml(activity.title)}</h1>
+    <div class="meta"><span>${escapeHtml(activity.duration)}</span><span>${escapeHtml(activity.bestFor)}</span><span>${escapeHtml(activity.intensity)} intensity</span></div>
+    <p><strong>Goal:</strong> ${escapeHtml(activity.goal)}</p>
+    <p><strong>Equipment:</strong> ${escapeHtml(activity.equipment)}</p>
+    <h2>How to play</h2>
+    <ol>${steps}</ol>
+    <div class="adapt">
+      <p><strong>Make it easier:</strong> ${escapeHtml(activity.easier)}</p>
+      <p><strong>Make it harder:</strong> ${escapeHtml(activity.harder)}</p>
+      <p><strong>Inclusive adaptation:</strong> ${escapeHtml(activity.adaptation)}</p>
+      <p><strong>Safety note:</strong> ${escapeHtml(activity.safety)}</p>
+    </div>
+    <p class="source">Generated based on materials available in the Resource Library.</p>
+  </article>
+  <script>
+    window.onload = () => {
+      window.focus();
+      window.print();
+    };
+  </script>
+</body>
+</html>`;
+
+    printWindow.document.open();
+    printWindow.document.write(activityHtml);
+    printWindow.document.close();
   };
 
 
@@ -613,7 +678,7 @@ export default function Page() {
                   <div><h2>About the Hub</h2><div className="yellow-line" /></div>
                 </div>
                 <p>The Home & Heart Digital Knowledge Hub is part of the Erasmus+ Sport project - Home & Heart: European Family Festival.</p>
-                <p>The Hub provides resources developed throughout the project, including materials emerging from the pilot event — the European Family Festival — alongside additional tools, guides and learning materials relevant for families, sport organisations, municipalities, partners and other target groups. In long-term it will also serve as a place for materials from other initiatives.</p>
+                <p>The Hub provides resources developed throughout the project, including materials emerging from the pilot event — the European Family Festival — alongside additional tools, guides and learning materials relevant for families, sport organisations, municipalities, partners and other target groups. In the long term, it will also serve as a place for materials from other initiatives.</p>
                 <div className="mini-graphic" aria-hidden="true">
                   <MonitorPlay size={42}/><FileText size={42}/><CheckCircle2 size={42}/>
                 </div>
@@ -651,7 +716,7 @@ export default function Page() {
               <span className="round-icon folder"><BookOpen size={28}/></span>
               <div>
                 <h2>Resource library</h2>
-                <p>Find materials by audience and purpose</p>
+                <p>Find materials by audience, topic and type</p>
               </div>
             </div>
             <p className="intro compact">Search, filter and access practical resources for families, sport organisations, municipalities, policymakers, coaches and project partners.</p>
