@@ -44,12 +44,13 @@ export async function POST(request: Request) {
     const materialTitle = getText(formData, 'materialTitle');
     const description = getText(formData, 'description');
     const materialType = getText(formData, 'materialType');
+    const materialLanguage = getText(formData, 'materialLanguage');
     const materialLink = getText(formData, 'materialLink');
     const reviewConsent = getText(formData, 'reviewConsent');
     const audiences = getList(formData, 'audiences');
     const topics = getList(formData, 'topics');
 
-    if (!organisation || !contactPerson || !contactEmail || !materialTitle || !description) {
+    if (!organisation || !contactPerson || !contactEmail || !materialTitle || !description || !materialLanguage) {
       return NextResponse.json({ error: 'Please complete all required fields.' }, { status: 400 });
     }
 
@@ -91,6 +92,7 @@ export async function POST(request: Request) {
         <tr><td><strong>Contact email</strong></td><td>${escapeHtml(contactEmail)}</td></tr>
         <tr><td><strong>Material title</strong></td><td>${escapeHtml(materialTitle)}</td></tr>
         <tr><td><strong>Material type</strong></td><td>${escapeHtml(materialType)}</td></tr>
+        <tr><td><strong>Material language</strong></td><td>${escapeHtml(materialLanguage)}</td></tr>
         <tr><td><strong>Target audience</strong></td><td>${escapeHtml(audiences.join(', ') || 'Not specified')}</td></tr>
         <tr><td><strong>Topic</strong></td><td>${escapeHtml(topics.join(', ') || 'Not specified')}</td></tr>
         <tr><td><strong>Material link</strong></td><td>${materialLink ? `<a href="${escapeHtml(materialLink)}">${escapeHtml(materialLink)}</a>` : 'No link provided'}</td></tr>

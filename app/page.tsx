@@ -46,6 +46,7 @@ const resourceItems = [
     description: 'Policy-oriented recommendations and evidence from the BeActive Beach Games model, supporting inclusive and active communities.',
     audiences: ['Policymakers', 'Municipalities'],
     resourceType: 'Document',
+    language: 'English',
     file: '/resources/policy-note.pdf',
     image: '/visuals/resource-covers/policy-note.jpg',
   },
@@ -56,6 +57,7 @@ const resourceItems = [
     description: 'Practical beach sport and physical activity ideas that can be adapted for families, coaches and sport organisations.',
     audiences: ['Families', 'Coaches', 'Organisations'],
     resourceType: 'Document',
+    language: 'English',
     file: '/resources/physical-activity-guide.pdf',
     image: '/visuals/resource-covers/physical-activity-guide.jpg',
   },
@@ -66,6 +68,7 @@ const resourceItems = [
     description: 'Step-by-step guidance for planning, coordinating, implementing and evaluating inclusive sport events.',
     audiences: ['Organisations', 'Municipalities'],
     resourceType: 'Document',
+    language: 'English',
     file: '/resources/event-organisation-guide.pdf',
     image: '/visuals/resource-covers/event-organisation-guide.jpg',
   },
@@ -76,6 +79,7 @@ const resourceItems = [
     description: 'Ready-to-use family games, relays, station formats, scoring ideas and practical set-up guidance for schools, families and organisations.',
     audiences: ['Families', 'Coaches', 'Organisations'],
     resourceType: 'Document',
+    language: 'Latvian',
     file: '/resources/family-activity-booklet.pdf',
     image: '/visuals/resource-covers/family-activity-booklet.jpg',
   },
@@ -526,7 +530,7 @@ export default function Page() {
   const filteredResources = useMemo(() => {
     const q = query.trim().toLowerCase();
     return resourceItems.filter((resource) => {
-      const matchesQuery = !q || [resource.title, resource.description, resource.type, resource.resourceType, ...resource.topics, ...resource.audiences]
+      const matchesQuery = !q || [resource.title, resource.description, resource.resourceType, resource.language, ...resource.topics, ...resource.audiences]
         .join(' ')
         .toLowerCase()
         .includes(q);
@@ -724,7 +728,7 @@ export default function Page() {
             <div className="search-filter-card compact-filters" aria-label="Resource search and filters">
               <label className="searchbox">
                 <Search size={20}/>
-                <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search resources by keyword, topic, audience or type…" />
+                <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search resources by keyword, topic, audience, type or language…" />
               </label>
               <div className="dropdown-filters">
                 <label>
@@ -760,7 +764,7 @@ export default function Page() {
                       <img className="resource-cover" src={resource.image} alt={`${resource.title} cover`} />
                     </div>
                     <div className="resource-body">
-                      <div className="resource-tags"><span>{resource.resourceType}</span><span>{resource.type}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}</div>
+                      <div className="resource-tags"><span>{resource.resourceType}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}<span className="language-tag">Language: {resource.language}</span></div>
                       <h3>{resource.title}</h3>
                       <p>{resource.description}</p>
                       <div className="audience-tags">{resource.audiences.map(tag => <em key={tag}>{tag}</em>)}</div>
@@ -885,9 +889,11 @@ export default function Page() {
             </div>
 
             <div className="form-row two">
+              <label>Material language<select name="materialLanguage" required defaultValue="English"><option>English</option><option>Latvian</option><option>Other / multilingual</option></select></label>
               <label>Material type<select name="materialType" required defaultValue="Document"><option>Document</option><option>Video</option><option>Photos</option></select></label>
-              <label>Upload file<input name="materialFile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.mp4,.mov,.zip" /></label>
             </div>
+
+            <label>Upload file<input name="materialFile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.mp4,.mov,.zip" /></label>
             <label>Link to material, video or photo gallery<input name="materialLink" type="url" placeholder="https://..." /></label>
 
             <label className="consent-line"><input name="reviewConsent" type="checkbox" required /> I understand that the material will be reviewed before it is published in the Resource Library.</label>
@@ -897,6 +903,23 @@ export default function Page() {
             </button>
             {submissionMessage && <p className={`submission-message ${submissionStatus}`}>{submissionMessage}</p>}
           </form>
+        </div>
+      </section>
+
+      <section className="section follow-section" id="follow">
+        <div className="container follow-card">
+          <div className="follow-copy">
+            <span className="kicker"><HeartHandshake size={16}/> Project updates</span>
+            <h2>Follow the project</h2>
+            <p>Home & Heart: European Family Festival is an Erasmus+ Sport project promoting inclusive family sport, physical activity and shared learning across Europe.</p>
+            <p>The Digital Knowledge Hub brings together practical resources, activity ideas and event organisation materials for families, coaches, sport organisations, municipalities and policymakers. Follow LSFP channels for project updates, new resources and information about the European Family Festival in Riga.</p>
+          </div>
+          <div className="social-grid" aria-label="Social media links">
+            <a href="https://www.facebook.com/lsfp.lv/" target="_blank" rel="noopener noreferrer" aria-label="Follow LSFP on Facebook"><span className="social-icon">f</span><strong>Facebook</strong></a>
+            <a href="https://www.instagram.com/lsfp.lv/" target="_blank" rel="noopener noreferrer" aria-label="Follow LSFP on Instagram"><span className="social-icon">◎</span><strong>Instagram</strong></a>
+            <a href="https://www.linkedin.com/company/latvian-sports-federations-council?originalSubdomain=lv" target="_blank" rel="noopener noreferrer" aria-label="Follow LSFP on LinkedIn"><span className="social-icon">in</span><strong>LinkedIn</strong></a>
+            <a href="https://www.youtube.com/@LatvijasSportafeder%C4%81cijupadome" target="_blank" rel="noopener noreferrer" aria-label="Follow LSFP on YouTube"><span className="social-icon">▶</span><strong>YouTube</strong></a>
+          </div>
         </div>
       </section>
 
