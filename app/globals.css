@@ -336,6 +336,7 @@ select, input, textarea { width:100%; padding: 13px 14px; border:1px solid var(-
 .submission-form input:focus, .submission-form textarea:focus, .submission-form select:focus { border-color:var(--blue); box-shadow:0 0 0 4px rgba(7,137,200,.1); }
 .form-row { display:grid; gap:14px; margin-bottom:14px; }
 .form-row.two { grid-template-columns: repeat(2, 1fr); }
+.form-row.two.single-field { grid-template-columns: 1fr; }
 .submission-form > label { display:block; margin-bottom:14px; }
 .submission-form fieldset { border:1px solid rgba(7,137,200,.18); border-radius:18px; padding:14px; background:#fbfdff; }
 .submission-form legend { padding:0 7px; }

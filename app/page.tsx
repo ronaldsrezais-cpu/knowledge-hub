@@ -888,8 +888,7 @@ export default function Page() {
               </fieldset>
             </div>
 
-            <div className="form-row two">
-              <label>Material language<select name="materialLanguage" required defaultValue="English"><option>English</option><option>Latvian</option><option>Other / multilingual</option></select></label>
+            <div className="form-row two single-field">
               <label>Material type<select name="materialType" required defaultValue="Document"><option>Document</option><option>Video</option><option>Photos</option></select></label>
             </div>
 
