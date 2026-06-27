@@ -32,3 +32,19 @@ Important notes:
 - The current file size limit is 10 MB.
 - For large videos or photo galleries, users should submit a public link instead of uploading a large file.
 - Submitted materials are not automatically published in the Resource Library. They are sent for review first.
+
+## v29 resource library update
+
+This version adds five additional resource library materials:
+
+- Sport for the Whole Family – Guidelines
+- Using Sport and Physical Activity to Promote Social Inclusion – Toolkit
+- Joy in Sport and Physical Activity Toolkit
+- Family Friendly Sport – Policy Recommendations
+- COME IN – Inclusive Grassroots Sport Toolkit
+
+It also adds the resource library filter options `Schools` and `Inclusion`.
+
+
+## v30 note
+The five additional public resources are included as external links instead of local files to keep the repository small enough for GitHub web uploads.
