@@ -482,7 +482,7 @@ const activityTemplates: ActivityTemplate[] = [
   {
     title: 'Animal Movement Trail',
     goals: ['energy', 'balance', 'connection'],
-    equipment: ['none', 'chalk or paper cards'],
+    equipment: ['none', 'chalk or paper cards', 'music'],
     locations: ['Home / indoor space', 'Park / outdoor space', 'Beach', 'School yard'],
     summary: 'Families move through a trail using animal-inspired movements adapted to each person’s ability.',
     steps: [
@@ -496,6 +496,24 @@ const activityTemplates: ActivityTemplate[] = [
     harder: 'Add balance holds, rhythm claps or a memory sequence of animals.',
     adaptation: 'For seated participants, use arm movements and expressive gestures for each animal.',
     safety: 'Avoid jumping on hard surfaces and choose movements that fit the age group.',
+  },
+  {
+    title: 'Music Stop Stations',
+    goals: ['energy', 'teamwork', 'connection', 'event', 'calm'],
+    equipment: ['music', 'cones or household objects', 'chalk or paper cards'],
+    locations: ['Home / indoor space', 'Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
+    summary: 'Families complete simple movement stations while music gives clear start, stop and rotation signals.',
+    steps: [
+      'Choose 4–6 simple stations such as balance pose, target throw, family high-five route, stretch shape, or slow-motion walk.',
+      'Start the music: while it plays, families complete the station at their own pace.',
+      'Pause the music: everyone freezes, gives one compliment to their team, and prepares to rotate.',
+      'Change the song speed to change the intensity: slower music for calm movement, faster music for energising rounds.',
+      'After each round, let one family choose a new movement that matches the rhythm.',
+    ],
+    easier: 'Use slower songs, fewer stations and longer pauses between rounds.',
+    harder: 'Use shorter music intervals, add rhythm claps, or ask families to remember a movement sequence.',
+    adaptation: 'Participants can move, clap, wave, roll, stretch or lead the rhythm from a seated position.',
+    safety: 'Keep volume comfortable, leave clear space between stations and avoid sudden fast movements when the music starts.',
   },
 ];
 
@@ -539,9 +557,51 @@ function generateActivity(input: ActivityInput, ideaIndex = 0) {
       ? 'For two people, take turns as mover and guide/scorekeeper.'
       : 'Rotate roles so everyone contributes.';
 
-  const equipmentText = input.equipment === 'none'
-    ? 'No special equipment is needed; use body movement, space markers or imagination.'
-    : `Use ${input.equipment} as the main shared material. Adapt with household or school equipment if needed.`;
+  const equipmentGuidance: Record<string, { label: string; instruction: string }> = {
+    none: {
+      label: 'No special equipment is needed; use body movement, space markers or imagination.',
+      instruction: 'Use body movement, clear start/finish points and simple role changes instead of objects.',
+    },
+    'a ball or balloon': {
+      label: 'Ball or balloon. Use it for rolling, passing, balancing, target throws or cooperative transport between family members.',
+      instruction: 'Use the ball/balloon in every round: pass it, roll it to a target, balance it together or move it through the route.',
+    },
+    'cones or household objects': {
+      label: 'Cones, bottles, shoes or other safe household objects. Use them as markers, gates, targets or station signs.',
+      instruction: 'Place the markers before the activity starts so participants can clearly see routes, targets and safe zones.',
+    },
+    'frisbee discs or paper plates': {
+      label: 'Frisbee discs or paper plates. Use them as flying targets, floor markers, balance spots or safe stepping islands.',
+      instruction: 'Use the discs/plates either as objects to throw or as visible spots that participants move between.',
+    },
+    'hula hoops or rope circles': {
+      label: 'Hula hoops or rope circles. Use them as islands, targets, gates, rescue zones or family team areas.',
+      instruction: 'Give each hoop/circle a clear purpose such as target, safe island, collection zone or station boundary.',
+    },
+    'pool noodles': {
+      label: 'Pool noodles. Use them as soft bats, javelins, balance lines, gates or safe distance markers.',
+      instruction: 'Use noodles only for soft controlled actions, such as guiding a ball, throwing toward a target or marking a safe lane.',
+    },
+    music: {
+      label: 'Music. Use it as a timing and movement cue: play means move, pause means freeze/rotate/change role, and tempo sets the intensity.',
+      instruction: 'Before starting, explain the music rules clearly: when music plays, participants move or complete the task; when it pauses, they freeze, rotate station or change roles.',
+    },
+    'chalk or paper cards': {
+      label: 'Chalk or paper cards. Use them for task cards, movement prompts, scorecards, route arrows or family challenge choices.',
+      instruction: 'Prepare simple cards or chalk signs so participants can understand the task without long explanations.',
+    },
+    'basket or box': {
+      label: 'Basket or box. Use it as a collection point, target, team base or object transport station.',
+      instruction: 'Place the basket/box where everyone can reach it safely and use it for collecting, sorting or aiming tasks.',
+    },
+    'mixed balls and markers': {
+      label: 'Mixed balls and markers. Use markers for the route and balls for throwing, rolling, carrying or target tasks.',
+      instruction: 'Separate the marker zones and ball zones so participants know where to move and where to throw or roll.',
+    },
+  };
+
+  const equipmentDetail = equipmentGuidance[input.equipment] || equipmentGuidance.none;
+  const equipmentText = equipmentDetail.label;
 
   return {
     title: template.title,
@@ -552,6 +612,7 @@ function generateActivity(input: ActivityInput, ideaIndex = 0) {
     equipment: equipmentText,
     steps: [
       `Prepare a safe activity area and explain that the aim is participation, cooperation and fun.`,
+      equipmentDetail.instruction,
       ...template.steps,
       `${durationNote} ${peopleNote}`,
     ],
