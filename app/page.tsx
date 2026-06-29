@@ -28,14 +28,13 @@ import {
   X,
 } from 'lucide-react';
 
-const audienceOptions = ['All audiences', 'Families', 'Organisations', 'Municipalities', 'Policymakers', 'Coaches', 'Schools'];
+const audienceOptions = ['All audiences', 'Families', 'Organisations', 'Municipalities', 'Policymakers', 'Coaches'];
 const topicOptions = [
   'All topics',
   'Activities',
   'Toolkits & Templates',
   'Event organisation',
   'Policy & Advocacy',
-  'Inclusion',
 ];
 const typeOptions = ['All types', 'Document', 'Video', 'Photos'];
 
@@ -86,7 +85,7 @@ const resourceItems = [
   },
   {
     type: 'Guidelines',
-    topics: ['Activities', 'Toolkits & Templates', 'Inclusion'],
+    topics: ['Activities', 'Toolkits & Templates'],
     title: 'Sport for the Whole Family – Guidelines',
     description: 'Guidelines, research findings and activity modules for designing and adapting intergenerational family sport programmes.',
     audiences: ['Families', 'Coaches', 'Organisations', 'Policymakers'],
@@ -97,10 +96,10 @@ const resourceItems = [
   },
   {
     type: 'Toolkit',
-    topics: ['Activities', 'Toolkits & Templates', 'Inclusion'],
+    topics: ['Activities', 'Toolkits & Templates'],
     title: 'Using Sport and Physical Activity to Promote Social Inclusion – Toolkit',
     description: 'Practical guidance for coaches, teachers and organisations using sport and physical activity to promote social inclusion and community cohesion.',
-    audiences: ['Coaches', 'Organisations', 'Schools'],
+    audiences: ['Coaches', 'Organisations'],
     resourceType: 'Document',
     language: 'English',
     file: 'https://ec.europa.eu/programmes/erasmus-plus/project-result-content/2b00fa65-d803-4b4c-a36b-81cc11ee4978/ISC_toolkit_ENG..pdf',
@@ -111,7 +110,7 @@ const resourceItems = [
     topics: ['Activities', 'Event organisation', 'Toolkits & Templates'],
     title: 'Joy in Sport and Physical Activity Toolkit',
     description: 'A practical toolkit for joyful physical activity events, including the festival method, activation ideas and station-based movement formats.',
-    audiences: ['Families', 'Coaches', 'Organisations', 'Schools'],
+    audiences: ['Families', 'Coaches', 'Organisations'],
     resourceType: 'Document',
     language: 'English',
     file: 'https://www.essd.eu/api/uploads/ESSD_2023_Joy_In_Sport_toolkit_FINAL_7e28f2247f.pdf',
@@ -119,7 +118,7 @@ const resourceItems = [
   },
   {
     type: 'Policy recommendations',
-    topics: ['Policy & Advocacy', 'Inclusion'],
+    topics: ['Policy & Advocacy'],
     title: 'Family Friendly Sport – Policy Recommendations',
     description: 'Policy recommendations for local authorities and national sport federations to recognise, support and promote family friendly sport.',
     audiences: ['Policymakers', 'Municipalities', 'Organisations'],
@@ -130,10 +129,10 @@ const resourceItems = [
   },
   {
     type: 'Toolkit',
-    topics: ['Activities', 'Toolkits & Templates', 'Inclusion'],
+    topics: ['Activities', 'Toolkits & Templates'],
     title: 'COME IN – Inclusive Grassroots Sport Toolkit',
     description: 'A toolkit for coaches, educators, volunteers and grassroots sport organisations creating inclusive sport experiences for young people with disabilities.',
-    audiences: ['Coaches', 'Organisations', 'Schools', 'Municipalities'],
+    audiences: ['Coaches', 'Organisations', 'Municipalities'],
     resourceType: 'Document',
     language: 'English',
     file: 'https://ec.europa.eu/programmes/erasmus-plus/project-result-content/d4ea10e9-fbdd-47b6-8d01-672a3a8a43e0/COME-IN_tookit.pdf',
@@ -990,7 +989,7 @@ export default function Page() {
               <fieldset>
                 <legend>Target audience</legend>
                 <div className="check-grid">
-                  {['Families', 'Coaches', 'Organisations', 'Municipalities', 'Policymakers', 'Schools'].map(item => (
+                  {['Families', 'Coaches', 'Organisations', 'Municipalities', 'Policymakers'].map(item => (
                     <label key={item}><input type="checkbox" name="audiences" value={item} /> {item}</label>
                   ))}
                 </div>
@@ -998,7 +997,7 @@ export default function Page() {
               <fieldset>
                 <legend>Topic</legend>
                 <div className="check-grid">
-                  {['Activities', 'Toolkits & Templates', 'Event organisation', 'Policy & Advocacy', 'Inclusion'].map(item => (
+                  {['Activities', 'Toolkits & Templates', 'Event organisation', 'Policy & Advocacy'].map(item => (
                     <label key={item}><input type="checkbox" name="topics" value={item} /> {item}</label>
                   ))}
                 </div>
