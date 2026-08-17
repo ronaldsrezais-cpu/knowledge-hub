@@ -818,8 +818,8 @@ export default function Page() {
                   <div className="festival-details">
                     <p><CalendarDays size={19}/><strong>Date:</strong> 22 August 2026</p>
                     <p><MapPin size={19}/><strong>Place:</strong> Uzvaras Parks, Riga, Latvia</p>
-                    <p><ClipboardCheck size={19}/><strong>Programme:</strong> Coming soon</p>
-                    <p><Radio size={19}/><strong>Livestream:</strong> Link not available yet</p>
+                    <p><ClipboardCheck size={19}/><strong>Programme:</strong> <a href="https://www.gimenufestivals.lv/" target="_blank" rel="noreferrer">View the programme</a></p>
+                    <p><Radio size={19}/><strong>Livestream:</strong> <a href="https://youtube.com/live/lIMjOrZcsyo?feature=share" target="_blank" rel="noreferrer">Watch the livestream</a></p>
                   </div>
                 </div>
                 <div className="park-strip" aria-hidden="true"><span/><span/><span/><span/><span/></div>

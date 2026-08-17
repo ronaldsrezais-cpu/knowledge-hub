@@ -66,6 +66,8 @@ h1 { margin: 18px 0 16px; font-size: clamp(42px, 6.2vw, 74px); line-height: .95;
 .festival-details p { margin:0; display:flex; align-items:center; gap:8px; color:#1e3545; }
 .festival-details svg { color:var(--blue); flex:0 0 auto; }
 .festival-details strong { color:var(--blue); margin-right:4px; }
+.festival-details a { color: var(--blue); font-weight: 800; text-decoration: none; }
+.festival-details a:hover { text-decoration: underline; }
 .park-strip { height:74px; margin: 18px -24px -24px; background: linear-gradient(180deg, transparent 0, rgba(205,238,250,.7) 40%, rgba(56,183,100,.28) 100%); position:relative; overflow:hidden; }
 .park-strip span { position:absolute; bottom:9px; width:10px; height:38px; background:#0b4973; border-radius:999px; opacity:.75; }
 .park-strip span:before { content:""; position:absolute; top:-13px; left:-10px; width:30px; height:30px; border-radius:50%; background: rgba(56,183,100,.7); }
