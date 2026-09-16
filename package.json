@@ -3,7 +3,9 @@
   "version": "9.0.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/inject-resource-videos.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/inject-resource-videos.mjs",
     "build": "next build",
     "start": "next start"
   },
