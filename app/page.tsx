@@ -808,7 +808,8 @@ export default function Page() {
                     <p><UsersRound size={19}/><strong>International participation:</strong> 50 families · 200 participants</p>
                     <p><UsersRound size={19}/><strong>Local participation:</strong> 657 families · 2,320 participants</p>
                     <p><ClipboardCheck size={19}/><strong>Programme:</strong> <a href="https://www.gimenufestivals.lv/" target="_blank" rel="noreferrer">View the programme</a></p>
-                    <p><Radio size={19}/><strong>Livestream:</strong> <a href="https://youtube.com/live/lIMjOrZcsyo?feature=share" target="_blank" rel="noreferrer">Watch the livestream</a></p>
+                    <p><Radio size={19}/><strong>22nd of August Family Cup Livestream:</strong> <a href="https://youtube.com/live/lIMjOrZcsyo?feature=share" target="_blank" rel="noreferrer">Watch the livestream</a></p>
+                    <p><UsersRound size={19}/><strong>19th of September Festival photos:</strong> <a href="https://www.facebook.com/lsfp.lv/posts/pfbid02tkiTxRsTg7t4XJVvDwKPeTNy45uva7v6JLxCNzCZFsTckNLqpfzkbquUG6xcomEnl" target="_blank" rel="noreferrer">View festival photos</a></p>
                   </div>
                 </div>
                 <div className="park-strip" aria-hidden="true"><span/><span/><span/><span/><span/></div>
@@ -885,7 +886,7 @@ export default function Page() {
                     {cardContent}
                   </div>
                 ) : (
-                  <a className="resource-card" href={resource.file} target="_blank" rel="noopener noreferrer" key={resource.title} aria-label={`Open ${resource.title}`}>
+                  <a className="resource-card" href={resource.file} target={resource.download ? undefined : "_blank"} rel="noopener noreferrer" download={resource.download ? "Family Cup Activity Toolkit.pdf" : undefined} key={resource.title} aria-label={resource.download ? `Download ${resource.title}` : `Open ${resource.title}`}>
                     {cardContent}
                   </a>
                 );
