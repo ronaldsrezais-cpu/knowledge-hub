@@ -645,7 +645,7 @@ export default function Page() {
 
   const filteredResources = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return resourceItems.filter((resource) => {
+    return [...resourceItems].reverse().filter((resource) => {
       const matchesQuery = !q || [resource.title, resource.description, resource.resourceType, resource.language, ...resource.topics, ...resource.audiences]
         .join(' ')
         .toLowerCase()
