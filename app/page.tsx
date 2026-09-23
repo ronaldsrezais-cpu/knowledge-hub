@@ -874,8 +874,8 @@ export default function Page() {
 
             <div className="resource-grid">
               {filteredResources.map((resource) => {
-                return (
-                  <a className="resource-card" href={resource.file} target="_blank" rel="noopener noreferrer" key={resource.title} aria-label={`Open ${resource.title}`}>
+                const cardContent = (
+                  <>
                     <div className="resource-visual resource-cover-wrap">
                       <img className="resource-cover" src={resource.image} alt={`${resource.title} cover`} />
                     </div>
@@ -883,9 +883,21 @@ export default function Page() {
                       <div className="resource-tags"><span>{resource.resourceType}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}<span className="language-tag">Language: {resource.language}</span></div>
                       <h3>{resource.title}</h3>
                       <p>{resource.description}</p>
+                      {resource.quizLink && <a className="resource-quiz-link" href={resource.quizLink} target="_blank" rel="noopener noreferrer">Take the water-safety quiz</a>}
                       <div className="audience-tags">{resource.audiences.map(tag => <em key={tag}>{tag}</em>)}</div>
                     </div>
                     <ChevronRight className="resource-arrow" size={24}/>
+                  </>
+                );
+
+                return resource.quizLink ? (
+                  <div className="resource-card resource-card-with-quiz" key={resource.title}>
+                    <a className="resource-card-primary-link" href={resource.file} target="_blank" rel="noopener noreferrer" aria-label={`Open ${resource.title}`} />
+                    {cardContent}
+                  </div>
+                ) : (
+                  <a className="resource-card" href={resource.file} target="_blank" rel="noopener noreferrer" key={resource.title} aria-label={`Open ${resource.title}`}>
+                    {cardContent}
                   </a>
                 );
               })}
