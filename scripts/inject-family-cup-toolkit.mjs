@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
 const pagePath = new URL('../app/page.tsx', import.meta.url);
-const marker = 'Family Cup Activity Toolkit';
+const marker = "title: 'Family Cup Activity Toolkit'";
 
 const resource = `
   {
