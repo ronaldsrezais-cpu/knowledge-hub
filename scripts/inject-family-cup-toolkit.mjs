@@ -12,8 +12,9 @@ const resource = `
     audiences: ['Families', 'Coaches', 'Organisations', 'Municipalities'],
     resourceType: 'Document',
     language: 'English',
-    file: '/resources/family-cup-activity-toolkit',
+    file: '/resources/family-cup-activity-toolkit.pdf',
     image: '/visuals/home-heart-logo.png',
+    download: true,
   },
 `;
 
