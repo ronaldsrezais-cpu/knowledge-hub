@@ -891,6 +891,7 @@ export default function Page() {
 
             <div className="resource-grid">
               {filteredResources.map((resource) => {
+                const isDownload = 'download' in resource && resource.download === true;
                 const cardContent = (
                   <>
                     <div className="resource-visual resource-cover-wrap">
@@ -913,7 +914,7 @@ export default function Page() {
                     {cardContent}
                   </div>
                 ) : (
-                  <a className="resource-card" href={resource.file} target={resource.download ? undefined : "_blank"} rel="noopener noreferrer" download={resource.download ? "Family Cup Activity Toolkit.pdf" : undefined} key={resource.title} aria-label={resource.download ? `Download ${resource.title}` : `Open ${resource.title}`}>
+                  <a className="resource-card" href={resource.file} target={isDownload ? undefined : "_blank"} rel="noopener noreferrer" download={isDownload ? "Family Cup Activity Toolkit.pdf" : undefined} key={resource.title} aria-label={isDownload ? `Download ${resource.title}` : `Open ${resource.title}`}>
                     {cardContent}
                   </a>
                 );
