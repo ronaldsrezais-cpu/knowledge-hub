@@ -140,13 +140,6 @@ const resourceItems = [
   },
 ];
 
-function daysUntilFestival() {
-  const eventDate = new Date('2026-08-22T00:00:00+03:00');
-  const now = new Date();
-  const diff = eventDate.getTime() - now.getTime();
-  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
-}
-
 type ActivityInput = {
   members: string;
   people: string;
@@ -641,7 +634,6 @@ export default function Page() {
   const [ideaIndex, setIdeaIndex] = useState(0);
 
   const activity = useMemo(() => generateActivity({ members, people, location, duration, goal, equipment, accessibility, intensity }, ideaIndex), [members, people, location, duration, goal, equipment, accessibility, intensity, ideaIndex]);
-  const countdown = daysUntilFestival();
 
   const filteredResources = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -810,14 +802,11 @@ export default function Page() {
                   <div><h2>European Family Festival</h2><span className="badge strong">Pilot event</span></div>
                 </div>
                 <div className="festival-content">
-                  <div className="countdown-box">
-                    <span>Event starts in</span>
-                    <strong>{countdown}</strong>
-                    <b>days</b>
-                  </div>
                   <div className="festival-details">
-                    <p><CalendarDays size={19}/><strong>Date:</strong> 22 August 2026</p>
+                    <p><CalendarDays size={19}/><strong>Dates:</strong> 22nd of August 2026 and 19th of September 2026</p>
                     <p><MapPin size={19}/><strong>Place:</strong> Uzvaras Parks, Riga, Latvia</p>
+                    <p><UsersRound size={19}/><strong>International participation:</strong> 50 families · 200 participants</p>
+                    <p><UsersRound size={19}/><strong>Local participation:</strong> 657 families · 2,320 participants</p>
                     <p><ClipboardCheck size={19}/><strong>Programme:</strong> <a href="https://www.gimenufestivals.lv/" target="_blank" rel="noreferrer">View the programme</a></p>
                     <p><Radio size={19}/><strong>Livestream:</strong> <a href="https://youtube.com/live/lIMjOrZcsyo?feature=share" target="_blank" rel="noreferrer">Watch the livestream</a></p>
                   </div>
