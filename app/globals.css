@@ -91,6 +91,9 @@ h1 { margin: 18px 0 16px; font-size: clamp(42px, 6.2vw, 74px); line-height: .95;
 .clear { display:inline-flex; align-items:center; gap:6px; border:0; background:transparent; color:var(--blue); font-weight:900; }
 .resource-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
 .resource-card { display:grid; grid-template-columns: 104px 1fr 28px; gap:16px; align-items:center; background:white; border:1px solid rgba(7,137,200,.18); border-radius:22px; padding:12px; min-height:142px; transition: transform .18s ease, box-shadow .18s ease; }
+.resource-card-with-quiz { position:relative; }
+.resource-card-primary-link { position:absolute; inset:0; z-index:1; border-radius:22px; }
+.resource-card-with-quiz .resource-quiz-link { position:relative; z-index:2; display:inline-flex; margin-top:8px; font-weight:800; color:var(--blue); text-decoration:underline; text-underline-offset:3px; }
 .resource-card:hover { transform: translateY(-2px); box-shadow:0 18px 40px rgba(7,63,103,.12); }
 .resource-visual { height:100%; min-height:116px; border-radius:18px; display:grid; place-items:center; color:white; }
 .resource-cover-wrap { overflow:hidden; background:#fff; border:1px solid rgba(7,137,200,.12); padding:6px; }
