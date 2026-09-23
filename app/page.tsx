@@ -802,14 +802,41 @@ export default function Page() {
                   <div><h2>European Family Festival</h2><span className="badge strong">Pilot event</span></div>
                 </div>
                 <div className="festival-content">
-                  <div className="festival-details">
-                    <p><CalendarDays size={19}/><strong>Dates:</strong> 22nd of August 2026 and 19th of September 2026</p>
+                  <div className="festival-details festival-summary">
                     <p><MapPin size={19}/><strong>Place:</strong> Uzvaras Parks, Riga, Latvia</p>
                     <p><UsersRound size={19}/><strong>International participation:</strong> 50 families · 200 participants</p>
                     <p><UsersRound size={19}/><strong>Local participation:</strong> 657 families · 2,320 participants</p>
                     <p><ClipboardCheck size={19}/><strong>Programme:</strong> <a href="https://www.gimenufestivals.lv/" target="_blank" rel="noreferrer">View the programme</a></p>
-                    <p><Radio size={19}/><strong>22nd of August Family Cup Livestream:</strong> <a href="https://youtube.com/live/lIMjOrZcsyo?feature=share" target="_blank" rel="noreferrer">Watch the livestream</a></p>
-                    <p><UsersRound size={19}/><strong>19th of September Festival photos:</strong> <a href="https://www.facebook.com/lsfp.lv/posts/pfbid02tkiTxRsTg7t4XJVvDwKPeTNy45uva7v6JLxCNzCZFsTckNLqpfzkbquUG6xcomEnl" target="_blank" rel="noreferrer">View festival photos</a></p>
+                  </div>
+
+                  <div className="festival-date-grid">
+                    <div className="festival-date-card">
+                      <div className="festival-date-heading">
+                        <CalendarDays size={22}/>
+                        <div>
+                          <strong>22nd of August 2026</strong>
+                          <span>Family Cup</span>
+                        </div>
+                      </div>
+                      <div className="festival-media-links">
+                        <a href="https://youtube.com/live/lIMjOrZcsyo?feature=share" target="_blank" rel="noreferrer"><Radio size={18}/> Watch the Family Cup livestream</a>
+                        <a href="https://www.youtube.com/watch?v=MCNF4W-nCBE" target="_blank" rel="noreferrer"><PlayCircle size={18}/> Watch the recap video</a>
+                        <a href="https://www.facebook.com/lsfp.lv/posts/pfbid051NFhdqjMFQqCXzuLYdoznhfjtaRKXiGvCJBNHUAXwcTzDqJ5DYAgzH5UfynfhStl" target="_blank" rel="noreferrer"><UsersRound size={18}/> View Family Cup photos</a>
+                      </div>
+                    </div>
+
+                    <div className="festival-date-card">
+                      <div className="festival-date-heading">
+                        <CalendarDays size={22}/>
+                        <div>
+                          <strong>19th of September 2026</strong>
+                          <span>European Family Festival</span>
+                        </div>
+                      </div>
+                      <div className="festival-media-links">
+                        <a href="https://www.facebook.com/lsfp.lv/posts/pfbid02tkiTxRsTg7t4XJVvDwKPeTNy45uva7v6JLxCNzCZFsTckNLqpfzkbquUG6xcomEnl" target="_blank" rel="noreferrer"><UsersRound size={18}/> View Festival photos</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="park-strip" aria-hidden="true"><span/><span/><span/><span/><span/></div>
