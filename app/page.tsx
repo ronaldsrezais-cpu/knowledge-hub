@@ -857,7 +857,7 @@ export default function Page() {
                       <div className="resource-tags"><span>{resource.resourceType}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}<span className="language-tag">Language: {resource.language}</span></div>
                       <h3>{resource.title}</h3>
                       <p>{resource.description}</p>
-                      {resource.quizLink && <a className="resource-quiz-link" href={resource.quizLink} target="_blank" rel="noopener noreferrer">Take the water-safety quiz</a>}
+                      {resource.quizLink && <a className="resource-quiz-link" href={resource.quizLink} target="_blank" rel="noopener noreferrer">Take the quiz</a>}
                       <div className="audience-tags">{resource.audiences.map(tag => <em key={tag}>{tag}</em>)}</div>
                     </div>
                     <ChevronRight className="resource-arrow" size={24}/>
