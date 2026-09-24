@@ -14,7 +14,7 @@ const resource = `
     language: 'English',
     file: '/resources/family-cup-activity-toolkit.pdf',
     image: '/visuals/home-heart-logo.png',
-    download: true,
+    downloadName: 'Family Cup Activity Toolkit.pdf',
   },
 `;
 
