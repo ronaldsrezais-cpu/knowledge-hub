@@ -3,9 +3,9 @@
   "version": "9.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/inject-resource-videos.mjs && node scripts/inject-activity-instruction-videos.mjs && node scripts/inject-water-safety-video.mjs && node scripts/inject-family-cup-toolkit.mjs && node scripts/inject-safe-movement-video.mjs",
+    "predev": "node scripts/inject-resource-videos.mjs && node scripts/inject-activity-instruction-videos.mjs && node scripts/inject-water-safety-video.mjs && node scripts/inject-family-cup-toolkit.mjs && node scripts/inject-safe-movement-video.mjs && node scripts/inject-event-organisation-replication-manual.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/inject-resource-videos.mjs && node scripts/inject-activity-instruction-videos.mjs && node scripts/inject-water-safety-video.mjs && node scripts/inject-family-cup-toolkit.mjs && node scripts/inject-safe-movement-video.mjs",
+    "prebuild": "node scripts/inject-resource-videos.mjs && node scripts/inject-activity-instruction-videos.mjs && node scripts/inject-water-safety-video.mjs && node scripts/inject-family-cup-toolkit.mjs && node scripts/inject-safe-movement-video.mjs && node scripts/inject-event-organisation-replication-manual.mjs",
     "build": "next build",
     "start": "next start"
   },
