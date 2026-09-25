@@ -102,7 +102,7 @@ const activityTemplates: ActivityTemplate[] = [
   {
     title: 'Obstacle Course',
     goals: ['teamwork', 'connection', 'strategy', 'event'],
-    equipmentTags: ['cones or household objects', 'chalk or paper cards'],
+    equipmentTags: ['cones or household objects'],
     locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
     intensities: ['Low', 'Medium', 'Active'],
     peopleMin: 3,
@@ -129,7 +129,7 @@ const activityTemplates: ActivityTemplate[] = [
   {
     title: 'Ball Path',
     goals: ['teamwork', 'balance', 'strategy', 'connection', 'event'],
-    equipmentTags: ['mixed balls and markers', 'a ball or balloon', 'target equipment'],
+    equipmentTags: ['a ball or balloon', 'mixed balls and markers'],
     locations: ['Sports hall', 'Small indoor space', 'School yard', 'Community event area'],
     intensities: ['Very low', 'Low', 'Medium'],
     peopleMin: 2,
@@ -222,7 +222,7 @@ const activityTemplates: ActivityTemplate[] = [
   {
     title: 'Ladder Golf',
     goals: ['accuracy', 'strategy', 'teamwork', 'event'],
-    equipmentTags: ['target equipment', 'hula hoops or rope circles', 'cones or household objects'],
+    equipmentTags: ['target equipment', 'cones or household objects'],
     locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
     intensities: ['Very low', 'Low', 'Medium'],
     peopleMin: 2,
@@ -253,7 +253,7 @@ const activityTemplates: ActivityTemplate[] = [
   {
     title: 'Duck Race',
     goals: ['teamwork', 'connection', 'strategy', 'event'],
-    equipmentTags: ['air and water equipment', 'target equipment'],
+    equipmentTags: ['air and water equipment'],
     locations: ['Community event area', 'School yard', 'Sports hall', 'Park / outdoor space'],
     intensities: ['Very low', 'Low'],
     peopleMin: 2,
@@ -283,7 +283,7 @@ const activityTemplates: ActivityTemplate[] = [
   {
     title: 'Cube Puzzle',
     goals: ['strategy', 'memory', 'teamwork', 'calm', 'event'],
-    equipmentTags: ['puzzle or cards', 'chalk or paper cards', 'none'],
+    equipmentTags: ['puzzle or cards'],
     locations: ['Home / indoor space', 'Small indoor space', 'Sports hall', 'Community event area'],
     intensities: ['Very low', 'Low'],
     peopleMin: 2,
@@ -377,7 +377,7 @@ const activityTemplates: ActivityTemplate[] = [
   {
     title: 'Blow Challenge',
     goals: ['accuracy', 'calm', 'event'],
-    equipmentTags: ['air and water equipment', 'a ball or balloon', 'target equipment'],
+    equipmentTags: ['sloped track and small ball', 'a ball or balloon'],
     locations: ['Home / indoor space', 'Small indoor space', 'Sports hall', 'Community event area'],
     intensities: ['Very low', 'Low'],
     peopleMin: 1,
@@ -414,7 +414,7 @@ const activityTemplates: ActivityTemplate[] = [
     peopleMin: 2,
     peopleMax: 12,
     summary: 'A simple family movement session combining balance, strength, flexibility and agility so movement can become part of everyday life.',
-    equipmentDetail: 'No special equipment is required. Optional markers, chairs or music can be used to structure the activity.',
+    equipmentDetail: 'No special equipment is required for the basic version. If music is selected, use it as the timing and movement cue for the activity; markers or chairs can also be added to structure the space.',
     steps: [
       'Choose four short movement tasks: one balance task, one strength task, one flexibility task and one agility/coordination task.',
       'Work for about 30–60 seconds at each task at a comfortable pace.',
@@ -445,6 +445,23 @@ function peopleRange(value: string) {
   return match ? { min: Number(match[1]), max: Number(match[2]) } : { min: 2, max: 6 };
 }
 
+const selectedEquipmentGuidance: Record<string, string> = {
+  none: 'No special equipment is required for this version.',
+  'a ball or balloon': 'Use a ball or other soft ball as a main activity object.',
+  'cones or household objects': 'Use cones or safe household markers to define distances, routes or target areas.',
+  'hula hoops or rope circles': 'Use lightweight rings or hoops as the main throwing/target equipment.',
+  'target equipment': 'Use safe target or throwing equipment appropriate to the participants and venue.',
+  'puzzle or cards': 'Use a puzzle or picture-card set as the main problem-solving material.',
+  'containers and cards': 'Use labelled boxes or containers together with sorting cards/tokens.',
+  'spoons and small ball': 'Use spoons and a small lightweight ball as the core coordination equipment.',
+  'air and water equipment': 'Use a stable water channel, a floating object and hand-operated air pumps.',
+  'sloped track and small ball': 'Use a stable sloped track/channel and a table-tennis ball.',
+  music: 'Use music as a clear timing and movement cue: music playing means move; pause means freeze, rotate or change role.',
+  'chalk or paper cards': 'Use paper task/sorting cards or chalk markings as part of the activity setup.',
+  'basket or box': 'Use a basket or box as a target, collection point or sorting container.',
+  'mixed balls and markers': 'Use several soft balls together with clear floor/distance markers.',
+};
+
 function accessibilityScore(template: ActivityTemplate, accessibility: string) {
   if (accessibility === 'wheelchair') return template.wheelchairFriendly ? 5 : -5;
   if (accessibility === 'low') return template.lowImpact ? 4 : -2;
@@ -469,7 +486,12 @@ export function generateActivity(input: ActivityInput, ideaIndex = 0) {
   };
 
   const range = peopleRange(input.people);
-  const scored = activityTemplates
+  const equipmentMatchedTemplates = input.equipment === 'any'
+    ? activityTemplates
+    : activityTemplates.filter(template => template.equipmentTags.includes(input.equipment));
+  const candidates = equipmentMatchedTemplates.length ? equipmentMatchedTemplates : activityTemplates;
+
+  const scored = candidates
     .map((template, idx) => {
       let score = 0;
       if (template.goals.includes(input.goal)) score += 6;
@@ -520,7 +542,9 @@ export function generateActivity(input: ActivityInput, ideaIndex = 0) {
     bestFor: [input.members, input.people + ' people', input.location].join(' · '),
     intensity: input.intensity,
     goal: template.summary,
-    equipment: template.equipmentDetail,
+    equipment: input.equipment === 'any'
+      ? template.equipmentDetail
+      : `${selectedEquipmentGuidance[input.equipment] || ''} ${template.equipmentDetail}`.trim(),
     steps: [
       'Prepare a safe activity area and explain the objective before starting.',
       ...template.steps,
