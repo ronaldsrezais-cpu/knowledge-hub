@@ -219,7 +219,7 @@ export default function Page() {
       <p><strong>Inclusive adaptation:</strong> ${escapeHtml(activity.adaptation)}</p>
       <p><strong>Safety note:</strong> ${escapeHtml(activity.safety)}</p>
     </div>
-    <p class="source">Generated based on materials available in the Resource Library.</p>
+    <p class="source"><strong>Based on Resource Library material:</strong> ${escapeHtml(activity.sourceTitle)}${activity.videoUrl ? ' · Matching activity instruction video available online.' : ''}</p>
   </article>
   <script>
     window.onload = () => {
@@ -420,7 +420,7 @@ export default function Page() {
           <div className="panel">
             <span className="kicker light"><Activity size={16}/> Interactive tool</span>
             <h3>Family Activity Generator</h3>
-            <p>Create a ready-to-use family movement idea based on who is joining, where the activity will happen, time available, equipment, intensity and accessibility needs.</p>
+            <p>Create a ready-to-use family movement idea adapted from activities and guidance in the Resource Library. The generator now matches your group, location, equipment, intensity and accessibility needs to the most relevant published material.</p>
             <div className="formgrid advanced-form">
               <label>Family members<select value={members} onChange={e => { setMembers(e.target.value); setIdeaIndex(0); }}><option>Mixed generations</option><option>Children 3-6</option><option>Children 7-12</option><option>Teenagers</option><option>Parents + children</option><option>Parents + grandparents</option><option>Full family group</option><option>School/preschool group</option><option>Community group</option></select></label>
               <label>Number of people<select value={people} onChange={e => { setPeople(e.target.value); setIdeaIndex(0); }}><option>2</option><option>2-3</option><option>3-4</option><option>4-5</option><option>6-8</option><option>9-12</option><option>12+</option></select></label>
