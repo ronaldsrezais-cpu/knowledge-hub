@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, type FormEvent } from 'react';
+import { generateActivity } from './activity-generator';
 import {
   Activity,
   BookOpen,
@@ -96,481 +97,6 @@ const resourceItems = [
   },
 ];
 
-type ActivityInput = {
-  members: string;
-  people: string;
-  location: string;
-  duration: string;
-  goal: string;
-  equipment: string;
-  accessibility: string;
-  intensity: string;
-};
-
-type ActivityTemplate = {
-  title: string;
-  goals: string[];
-  equipment: string[];
-  locations: string[];
-  summary: string;
-  steps: string[];
-  easier: string;
-  harder: string;
-  adaptation: string;
-  safety: string;
-};
-
-const activityTemplates: ActivityTemplate[] = [
-  {
-    title: 'Rescue the Balls',
-    goals: ['teamwork', 'energy', 'accuracy', 'event'],
-    equipment: ['hula hoops or rope circles', 'mixed balls and markers', 'cones or household objects'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
-    summary: 'Families use hoops or rope circles attached to strings to pull balls back over a safe line without stepping into the playing area.',
-    steps: [
-      'Mark a safe line and place different balls in the middle of the activity zone.',
-      'Each family member holds a rope/hoop tool and tries to “rescue” one ball at a time.',
-      'The team works together to pull balls across the line without entering the zone.',
-      'After each rescued ball, rotate who gives directions and who attempts the next catch.',
-      'Finish when all balls are rescued or when the time is over.',
-    ],
-    easier: 'Place the balls closer to the line and use larger hoops or lighter balls.',
-    harder: 'Use balls of different sizes, add a centre bonus ball, or require families to rescue balls in a chosen order.',
-    adaptation: 'For seated or wheelchair users, reduce the distance and allow one person to hold the rope while another gives directions.',
-    safety: 'Keep enough space between teams so ropes cannot reach other participants and remind everyone not to step into the playing area.',
-  },
-  {
-    title: 'Three-in-a-Row Relay',
-    goals: ['strategy', 'teamwork', 'event', 'energy'],
-    equipment: ['hula hoops or rope circles', 'cones or household objects', 'chalk or paper cards'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Small indoor space'],
-    summary: 'A movement version of tic-tac-toe where teams run, walk or roll to place markers in a 3x3 grid and try to form a line.',
-    steps: [
-      'Create a 3x3 grid using hoops, chalk squares or paper circles.',
-      'Give each team five markers in one colour.',
-      'One player at a time moves to the grid and places one marker in an empty space.',
-      'After all markers are placed, players may move one of their own markers on each turn.',
-      'The first team to create a horizontal, vertical or diagonal line wins the round.',
-    ],
-    easier: 'Allow walking and discussion before each move.',
-    harder: 'Add a time limit, memory rule, or require a different movement style on every turn.',
-    adaptation: 'Use table-top cards instead of floor hoops for very low-mobility groups.',
-    safety: 'Leave enough space between the start line and grid and avoid fast turns on slippery floors.',
-  },
-  {
-    title: 'Noodle Football Golf',
-    goals: ['accuracy', 'balance', 'energy', 'event'],
-    equipment: ['pool noodles', 'a ball or balloon', 'cones or household objects'],
-    locations: ['Park / outdoor space', 'School yard', 'Sports hall', 'Community event area'],
-    summary: 'Families move a ball through a cone course using a pool noodle as a soft golf club and aim to finish in a goal.',
-    steps: [
-      'Set up a slalom course with cones and place a small goal or target at the end.',
-      'Each participant gets one controlled hit with the pool noodle, then returns to the team.',
-      'The next participant continues from where the ball stopped.',
-      'If the ball misses a cone, the next player guides it back through the correct route.',
-      'Record the time when the ball reaches the goal.',
-    ],
-    easier: 'Use fewer cones and a larger ball or goal.',
-    harder: 'Use a smaller target, add a turn-back cone, or require alternating strong/weak side hits.',
-    adaptation: 'Seated participants can hit from marked positions while teammates retrieve and reset the ball.',
-    safety: 'Use soft noodles only and keep players behind the start line until their turn.',
-  },
-  {
-    title: 'Cone Knockdown Challenge',
-    goals: ['accuracy', 'energy', 'teamwork', 'event'],
-    equipment: ['a ball or balloon', 'cones or household objects', 'mixed balls and markers'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
-    summary: 'Participants throw, roll or kick balls from marked spots to knock down cones placed in the middle of the area.',
-    steps: [
-      'Place cones or safe targets in the centre of the playing area.',
-      'Mark throwing or kicking spots at equal distances around the targets.',
-      'Each participant takes one attempt, retrieves the ball and returns to the same spot.',
-      'Continue until all targets are knocked down or the time ends.',
-      'Celebrate the best teamwork strategy, not only the fastest result.',
-    ],
-    easier: 'Move targets closer, use larger balls or allow rolling instead of throwing.',
-    harder: 'Use smaller targets, different throwing styles, or require the team to knock them down in a certain order.',
-    adaptation: 'Wheelchair users can roll or push balls from a closer marked position.',
-    safety: 'Use soft balls and make sure nobody retrieves balls while others are throwing.',
-  },
-  {
-    title: 'Memory Disc Match',
-    goals: ['memory', 'teamwork', 'calm', 'event'],
-    equipment: ['frisbee discs or paper plates', 'chalk or paper cards'],
-    locations: ['Home / indoor space', 'Small indoor space', 'Sports hall', 'School yard'],
-    summary: 'A movement memory game where participants turn over discs or cards to find matching symbols.',
-    steps: [
-      'Place 12–20 discs, paper plates or cards face down in a grid.',
-      'One participant moves to the grid and turns over two items.',
-      'If the symbols match, the pair stays open; if not, they are turned back over.',
-      'The family may help by remembering positions and giving calm guidance.',
-      'Continue until all pairs are found or the time ends.',
-    ],
-    easier: 'Use fewer pairs and larger symbols or allow the whole family to discuss before each turn.',
-    harder: 'Increase the number of pairs or add a movement task before turning each card.',
-    adaptation: 'For sensory-friendly play, remove the race element and focus on cooperation and memory.',
-    safety: 'Keep cards spaced out so participants do not collide when moving to the grid.',
-  },
-  {
-    title: 'Ball Basket Search',
-    goals: ['memory', 'teamwork', 'energy', 'event'],
-    equipment: ['basket or box', 'mixed balls and markers', 'chalk or paper cards'],
-    locations: ['Sports hall', 'School yard', 'Community event area', 'Park / outdoor space'],
-    summary: 'Families search a basket of balls for specific symbols and carry the correct balls to a sequence board.',
-    steps: [
-      'Attach simple symbols or colours to different balls and place them in a basket.',
-      'Give the family a card showing five symbols in a specific order.',
-      'Participants search together but carry only one correct ball at a time to the sequence area.',
-      'If a ball is placed in the wrong order, the next participant may fix it.',
-      'Finish when the correct sequence is completed.',
-    ],
-    easier: 'Use only three symbols and keep the basket close to the sequence board.',
-    harder: 'Add more symbols, hide balls under light covers, or use a longer sequence.',
-    adaptation: 'Create a seated sorting version with a nearby basket and table.',
-    safety: 'Avoid heavy balls and keep the carrying route clear.',
-  },
-  {
-    title: 'Family Ball Petanque',
-    goals: ['accuracy', 'calm', 'connection', 'event'],
-    equipment: ['a ball or balloon', 'mixed balls and markers'],
-    locations: ['Park / outdoor space', 'Beach', 'School yard', 'Sports hall'],
-    summary: 'A family-friendly target game where each person rolls or throws a ball as close as possible to a central target ball.',
-    steps: [
-      'Place one target ball 5–8 metres away, adjusting the distance to the group.',
-      'Each participant has one ball, preferably marked by team colour.',
-      'Players take turns rolling, throwing or gently kicking toward the target ball.',
-      'Participants may try to improve their team position by moving another ball safely.',
-      'At the end, identify which ball is closest to the target.',
-    ],
-    easier: 'Shorten the distance and allow rolling only.',
-    harder: 'Use uneven ground, smaller balls or a bonus zone around the target.',
-    adaptation: 'Works well for seated participants because rolling and precision matter more than speed.',
-    safety: 'Keep everyone behind the line until all balls have stopped moving.',
-  },
-  {
-    title: 'Guided Obstacle Path',
-    goals: ['teamwork', 'balance', 'connection', 'event'],
-    equipment: ['cones or household objects', 'chalk or paper cards'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Small indoor space'],
-    summary: 'One participant moves through a simple obstacle path while teammates guide with clear verbal instructions.',
-    steps: [
-      'Create a low obstacle path using cones, soft objects or floor markers.',
-      'One participant follows instructions from teammates while moving slowly through the path.',
-      'Guides use clear words such as “step left”, “pause”, “move forward” and “turn”.',
-      'Switch roles so everyone experiences guiding and being guided.',
-      'Reflect on which communication helped the most.',
-    ],
-    easier: 'Keep eyes open and use fewer obstacles.',
-    harder: 'Use a blindfold only if safe and consented, or add a time challenge.',
-    adaptation: 'For wheelchair users, create wider routes and replace low obstacles with visual markers.',
-    safety: 'Use only soft or easy-to-see obstacles and ensure close supervision.',
-  },
-  {
-    title: 'Frisbee Target Throw',
-    goals: ['accuracy', 'energy', 'event'],
-    equipment: ['frisbee discs or paper plates', 'basket or box'],
-    locations: ['Park / outdoor space', 'Beach', 'Sports hall', 'School yard'],
-    summary: 'Participants throw discs or paper plates toward a basket, box or marked target zone.',
-    steps: [
-      'Place a target 3–7 metres away depending on age and skill.',
-      'Each participant throws one or two discs from behind the line.',
-      'Collect discs only when all throws are finished.',
-      'Repeat the round from a new distance or angle.',
-      'Count successful throws or celebrate personal improvement.',
-    ],
-    easier: 'Move the target closer or make it larger.',
-    harder: 'Use a smaller target, add wind-safe outdoor rules or require different throwing styles.',
-    adaptation: 'Allow underarm throws, rolling discs, or a closer seated throwing line.',
-    safety: 'Never throw when someone is standing near the target.',
-  },
-  {
-    title: 'Distance Goal Challenge',
-    goals: ['accuracy', 'strategy', 'energy'],
-    equipment: ['a ball or balloon', 'cones or household objects'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space'],
-    summary: 'Participants choose how far from the goal they want to shoot, then each person takes one attempt.',
-    steps: [
-      'Set up a safe goal or target and mark several distance zones.',
-      'Each participant chooses a distance they think they can manage.',
-      'Before shooting, players may make one final distance change.',
-      'Everyone takes one attempt, starting with the closest participant.',
-      'The family celebrates the furthest successful attempt or total successful shots.',
-    ],
-    easier: 'Use a larger target and shorter distances.',
-    harder: 'Use smaller goals, angled shots or bonus points for careful distance choices.',
-    adaptation: 'Kicking can be replaced with rolling, pushing or throwing from a seated position.',
-    safety: 'Use soft balls and keep spectators away from the goal area.',
-  },
-  {
-    title: 'Pool Noodle Javelin',
-    goals: ['accuracy', 'energy', 'event'],
-    equipment: ['pool noodles', 'hula hoops or rope circles'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
-    summary: 'Families throw soft pool noodles toward a hoop target fixed safely in a goal, on a wall line or held low by an adult.',
-    steps: [
-      'Create a visible hoop target and mark a throwing line around 3 metres away.',
-      'Each participant throws one pool noodle toward the target.',
-      'Collect noodles after all throws are finished.',
-      'Repeat with a new distance or target height.',
-      'Count hits or try to improve the team score in the second round.',
-    ],
-    easier: 'Move closer and use a large hoop target.',
-    harder: 'Use two targets with different points or require non-dominant hand throws.',
-    adaptation: 'A seated throwing line works well because noodles are light and safe.',
-    safety: 'Use soft noodles only and make sure nobody stands behind or inside the target area.',
-  },
-  {
-    title: 'Big Ball Push',
-    goals: ['teamwork', 'energy', 'accuracy'],
-    equipment: ['mixed balls and markers', 'a ball or balloon'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space'],
-    summary: 'Teams throw or roll smaller balls to move a large ball across the opponent’s line.',
-    steps: [
-      'Place a large exercise ball or light beach ball in the centre.',
-      'Give each participant two small soft balls and mark team lines on both sides.',
-      'Participants throw or roll small balls to move the large ball away from their side.',
-      'Small balls outside the main zone can be collected and reused.',
-      'The round ends when the large ball crosses one team’s line or time expires.',
-    ],
-    easier: 'Use a light beach ball and shorter distance.',
-    harder: 'Use a heavier ball, wider area or rule that throws must be underarm.',
-    adaptation: 'Allow rolling from seated positions and give each person a defined safe throwing area.',
-    safety: 'Use soft balls only and keep hands away from the rolling large ball.',
-  },
-  {
-    title: 'Colour Treasure Relay',
-    goals: ['teamwork', 'memory', 'energy'],
-    equipment: ['cones or household objects', 'chalk or paper cards'],
-    locations: ['Home / indoor space', 'School yard', 'Park / outdoor space', 'Small indoor space'],
-    summary: 'Families collect colour or symbol cards in the correct order while rotating roles.',
-    steps: [
-      'Hide or spread colour cards around a safe area.',
-      'Give the family a sequence such as blue-yellow-green-red.',
-      'One person moves to collect one card, returns, and tags the next person.',
-      'The team may rearrange the sequence after each return.',
-      'Finish when the correct sequence is complete.',
-    ],
-    easier: 'Use fewer colours and keep cards visible.',
-    harder: 'Add decoy cards or require a different movement for each colour.',
-    adaptation: 'Place cards at accessible heights and allow a seated sorting role.',
-    safety: 'Set clear boundaries and avoid hiding cards in unsafe places.',
-  },
-  {
-    title: 'Family Islands',
-    goals: ['balance', 'connection', 'calm'],
-    equipment: ['hula hoops or rope circles', 'chalk or paper cards'],
-    locations: ['Home / indoor space', 'Small indoor space', 'Sports hall', 'School yard'],
-    summary: 'Families move between “islands” and complete short cooperative balance or movement tasks together.',
-    steps: [
-      'Create several islands using hoops, mats, rope circles or chalk shapes.',
-      'Call out a family task such as “everyone touches one island” or “make a bridge shape”.',
-      'Participants move safely between islands and solve the task together.',
-      'Rotate who calls the next task.',
-      'End with one slow breathing or stretching island.',
-    ],
-    easier: 'Use larger islands and remove time pressure.',
-    harder: 'Reduce the number of islands or add a “silent teamwork” round.',
-    adaptation: 'Use table-top shapes or hand movements for very limited mobility.',
-    safety: 'Keep islands flat, non-slippery and far enough apart for safe movement.',
-  },
-  {
-    title: 'Partner Pass Maze',
-    goals: ['teamwork', 'connection', 'balance'],
-    equipment: ['a ball or balloon', 'cones or household objects'],
-    locations: ['Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
-    summary: 'Pairs pass a ball through a simple cone maze without dropping it, using different passing styles.',
-    steps: [
-      'Set up a short cone maze with a start and finish.',
-      'Two family members move through the maze while passing a ball or balloon.',
-      'At each cone, they change the pass style: bounce, roll, overhead or side pass.',
-      'Switch partners after each round so generations mix.',
-      'Add a team cheer at the finish line.',
-    ],
-    easier: 'Use a balloon and wider cone spacing.',
-    harder: 'Add more turns, require silent passing or use a smaller ball.',
-    adaptation: 'Wheelchair users can roll or bounce-pass through a wider route.',
-    safety: 'Keep movement slow and controlled when passing through turns.',
-  },
-  {
-    title: 'Quiet Shape Builder',
-    goals: ['calm', 'connection', 'strategy'],
-    equipment: ['chalk or paper cards', 'cones or household objects'],
-    locations: ['Home / indoor space', 'Small indoor space', 'Sports hall'],
-    summary: 'Families use bodies, cards or objects to build shapes together, focusing on calm cooperation.',
-    steps: [
-      'Prepare shape cards such as circle, bridge, star, wave or house.',
-      'One family member draws a card and the group builds the shape together.',
-      'Use bodies, hands, scarves, cones or paper to create the shape safely.',
-      'After each shape, ask: what role did each person play?',
-      'End by creating a new family signature shape.',
-    ],
-    easier: 'Use simple shapes and allow objects instead of body poses.',
-    harder: 'Add a silent round or combine two shapes into one sequence.',
-    adaptation: 'Every shape can include seated, standing and object-based roles.',
-    safety: 'Avoid weight-bearing poses and keep movements comfortable.',
-  },
-  {
-    title: 'Mini Event Circuit',
-    goals: ['event', 'teamwork', 'energy', 'accuracy'],
-    equipment: ['mixed balls and markers', 'cones or household objects', 'frisbee discs or paper plates'],
-    locations: ['Community event area', 'School yard', 'Sports hall', 'Park / outdoor space'],
-    summary: 'A compact event format with three stations: target throw, movement relay and teamwork puzzle.',
-    steps: [
-      'Prepare three small stations that can each be completed in 3–5 minutes.',
-      'Station 1: throw or roll objects into a target zone.',
-      'Station 2: complete a short movement route as a family relay.',
-      'Station 3: solve a quick memory, sequence or shape-building task.',
-      'Rotate teams and use simple scorecards or participation stamps.',
-    ],
-    easier: 'Remove scoring and give participation stamps only.',
-    harder: 'Add time limits, bonus points for cooperation or a final family-created station.',
-    adaptation: 'Design each station with a seated version, a low-impact version and a helper role.',
-    safety: 'Give clear rules at every station and keep throwing areas separated from movement areas.',
-  },
-  {
-    title: 'Animal Movement Trail',
-    goals: ['energy', 'balance', 'connection'],
-    equipment: ['none', 'chalk or paper cards', 'music'],
-    locations: ['Home / indoor space', 'Park / outdoor space', 'Beach', 'School yard'],
-    summary: 'Families move through a trail using animal-inspired movements adapted to each person’s ability.',
-    steps: [
-      'Choose 5–6 animal cards such as bear, crab, flamingo, frog, penguin and turtle.',
-      'Set a short route or circle where each card becomes one movement station.',
-      'Participants choose a comfortable version of each animal movement.',
-      'Invite children or grandparents to invent a new animal station.',
-      'Finish with the slowest animal movement as a cool-down.',
-    ],
-    easier: 'Use walking versions and shorter distances.',
-    harder: 'Add balance holds, rhythm claps or a memory sequence of animals.',
-    adaptation: 'For seated participants, use arm movements and expressive gestures for each animal.',
-    safety: 'Avoid jumping on hard surfaces and choose movements that fit the age group.',
-  },
-  {
-    title: 'Music Stop Stations',
-    goals: ['energy', 'teamwork', 'connection', 'event', 'calm'],
-    equipment: ['music', 'cones or household objects', 'chalk or paper cards'],
-    locations: ['Home / indoor space', 'Sports hall', 'School yard', 'Park / outdoor space', 'Community event area'],
-    summary: 'Families complete simple movement stations while music gives clear start, stop and rotation signals.',
-    steps: [
-      'Choose 4–6 simple stations such as balance pose, target throw, family high-five route, stretch shape, or slow-motion walk.',
-      'Start the music: while it plays, families complete the station at their own pace.',
-      'Pause the music: everyone freezes, gives one compliment to their team, and prepares to rotate.',
-      'Change the song speed to change the intensity: slower music for calm movement, faster music for energising rounds.',
-      'After each round, let one family choose a new movement that matches the rhythm.',
-    ],
-    easier: 'Use slower songs, fewer stations and longer pauses between rounds.',
-    harder: 'Use shorter music intervals, add rhythm claps, or ask families to remember a movement sequence.',
-    adaptation: 'Participants can move, clap, wave, roll, stretch or lead the rhythm from a seated position.',
-    safety: 'Keep volume comfortable, leave clear space between stations and avoid sudden fast movements when the music starts.',
-  },
-];
-
-function generateActivity(input: ActivityInput, ideaIndex = 0) {
-  const accessibilityText: Record<string, string> = {
-    mixed: 'Offer each family member a choice of walking, rolling, stepping, throwing or seated movement.',
-    low: 'Use shorter distances, slower timing, larger targets and seated alternatives for every task.',
-    wheelchair: 'Create clear turning space and use object-passing, rolling or target activities instead of running.',
-    sensory: 'Avoid loud sounds, give clear visual instructions and allow a quiet role such as scorekeeper or designer.',
-    norunning: 'Replace running with walking, balancing, throwing, stretching or rhythm tasks.',
-    younger: 'Use simple rules, short rounds, colourful markers and more adult support.',
-    large: 'Run the activity as stations so families rotate without long waiting time.',
-    outdoor: 'Prepare an indoor or low-equipment alternative in case of weather changes.',
-  };
-
-  const scored = activityTemplates
-    .map((template, idx) => {
-      let score = 0;
-      if (template.goals.includes(input.goal)) score += 4;
-      if (template.equipment.includes(input.equipment)) score += 3;
-      if (template.locations.includes(input.location)) score += 2;
-      if (input.goal === 'calm' && input.intensity.includes('High')) score -= 2;
-      if (input.accessibility === 'norunning' && template.title.toLowerCase().includes('relay')) score -= 1;
-      return { template, idx, score };
-    })
-    .sort((a, b) => b.score - a.score || a.idx - b.idx);
-
-  const bestScore = scored[0]?.score ?? 0;
-  const pool = scored.filter(item => item.score >= bestScore - 2).map(item => item.template);
-  const template = pool[Math.abs(ideaIndex) % Math.max(pool.length, 1)] || activityTemplates[Math.abs(ideaIndex) % activityTemplates.length];
-
-  const durationNote = input.duration === '5 minutes'
-    ? 'Use this as one short station or warm-up round.'
-    : input.duration === '60 minutes'
-      ? 'Repeat the activity in several rounds and let families create their own variation.'
-      : 'Run one or two rounds depending on group size.';
-
-  const peopleNote = input.people === '12+'
-    ? 'For large groups, create parallel stations and rotate families every few minutes.'
-    : input.people === '2'
-      ? 'For two people, take turns as mover and guide/scorekeeper.'
-      : 'Rotate roles so everyone contributes.';
-
-  const equipmentGuidance: Record<string, { label: string; instruction: string }> = {
-    none: {
-      label: 'No special equipment is needed; use body movement, space markers or imagination.',
-      instruction: 'Use body movement, clear start/finish points and simple role changes instead of objects.',
-    },
-    'a ball or balloon': {
-      label: 'Ball or balloon. Use it for rolling, passing, balancing, target throws or cooperative transport between family members.',
-      instruction: 'Use the ball/balloon in every round: pass it, roll it to a target, balance it together or move it through the route.',
-    },
-    'cones or household objects': {
-      label: 'Cones, bottles, shoes or other safe household objects. Use them as markers, gates, targets or station signs.',
-      instruction: 'Place the markers before the activity starts so participants can clearly see routes, targets and safe zones.',
-    },
-    'frisbee discs or paper plates': {
-      label: 'Frisbee discs or paper plates. Use them as flying targets, floor markers, balance spots or safe stepping islands.',
-      instruction: 'Use the discs/plates either as objects to throw or as visible spots that participants move between.',
-    },
-    'hula hoops or rope circles': {
-      label: 'Hula hoops or rope circles. Use them as islands, targets, gates, rescue zones or family team areas.',
-      instruction: 'Give each hoop/circle a clear purpose such as target, safe island, collection zone or station boundary.',
-    },
-    'pool noodles': {
-      label: 'Pool noodles. Use them as soft bats, javelins, balance lines, gates or safe distance markers.',
-      instruction: 'Use noodles only for soft controlled actions, such as guiding a ball, throwing toward a target or marking a safe lane.',
-    },
-    music: {
-      label: 'Music. Use it as a timing and movement cue: play means move, pause means freeze/rotate/change role, and tempo sets the intensity.',
-      instruction: 'Before starting, explain the music rules clearly: when music plays, participants move or complete the task; when it pauses, they freeze, rotate station or change roles.',
-    },
-    'chalk or paper cards': {
-      label: 'Chalk or paper cards. Use them for task cards, movement prompts, scorecards, route arrows or family challenge choices.',
-      instruction: 'Prepare simple cards or chalk signs so participants can understand the task without long explanations.',
-    },
-    'basket or box': {
-      label: 'Basket or box. Use it as a collection point, target, team base or object transport station.',
-      instruction: 'Place the basket/box where everyone can reach it safely and use it for collecting, sorting or aiming tasks.',
-    },
-    'mixed balls and markers': {
-      label: 'Mixed balls and markers. Use markers for the route and balls for throwing, rolling, carrying or target tasks.',
-      instruction: 'Separate the marker zones and ball zones so participants know where to move and where to throw or roll.',
-    },
-  };
-
-  const equipmentDetail = equipmentGuidance[input.equipment] || equipmentGuidance.none;
-  const equipmentText = equipmentDetail.label;
-
-  return {
-    title: template.title,
-    duration: input.duration,
-    bestFor: `${input.members} · ${input.people} people · ${input.location}`,
-    intensity: input.intensity,
-    goal: template.summary,
-    equipment: equipmentText,
-    steps: [
-      `Prepare a safe activity area and explain that the aim is participation, cooperation and fun.`,
-      equipmentDetail.instruction,
-      ...template.steps,
-      `${durationNote} ${peopleNote}`,
-    ],
-    easier: template.easier,
-    harder: template.harder,
-    adaptation: `${template.adaptation} ${accessibilityText[input.accessibility] || accessibilityText.mixed}`,
-    safety: template.safety,
-  };
-}
-
 export default function Page() {
   const [query, setQuery] = useState('');
   const [audience, setAudience] = useState('All audiences');
@@ -584,7 +110,7 @@ export default function Page() {
   const [location, setLocation] = useState('Park / outdoor space');
   const [duration, setDuration] = useState('20 minutes');
   const [goal, setGoal] = useState('teamwork');
-  const [equipment, setEquipment] = useState('cones or household objects');
+  const [equipment, setEquipment] = useState('any');
   const [accessibility, setAccessibility] = useState('mixed');
   const [intensity, setIntensity] = useState('Medium');
   const [ideaIndex, setIdeaIndex] = useState(0);
@@ -901,11 +427,11 @@ export default function Page() {
               <label>Location<select value={location} onChange={e => { setLocation(e.target.value); setIdeaIndex(0); }}><option>Home / indoor space</option><option>Park / outdoor space</option><option>Beach</option><option>Sports hall</option><option>School yard</option><option>Playground</option><option>Small indoor space</option><option>Community event area</option></select></label>
               <label>Time available<select value={duration} onChange={e => { setDuration(e.target.value); setIdeaIndex(0); }}><option>5 minutes</option><option>10 minutes</option><option>15 minutes</option><option>20 minutes</option><option>30 minutes</option><option>45 minutes</option><option>60 minutes</option></select></label>
               <label>Goal<select value={goal} onChange={e => { setGoal(e.target.value); setIdeaIndex(0); }}><option value="energy">Energy boost</option><option value="teamwork">Teamwork</option><option value="balance">Balance & coordination</option><option value="calm">Calm movement</option><option value="connection">Intergenerational connection</option><option value="accuracy">Accuracy / target practice</option><option value="memory">Memory & focus</option><option value="strategy">Strategy & decision-making</option><option value="event">Event station / relay format</option></select></label>
-              <label>Equipment<select value={equipment} onChange={e => { setEquipment(e.target.value); setIdeaIndex(0); }}><option value="none">No special equipment</option><option value="a ball or balloon">Ball or balloon</option><option value="cones or household objects">Cones / markers</option><option value="frisbee discs or paper plates">Frisbee discs / paper plates</option><option value="hula hoops or rope circles">Hula hoops / rope circles</option><option value="pool noodles">Pool noodles</option><option value="music">Music</option><option value="chalk or paper cards">Chalk / paper cards</option><option value="basket or box">Basket / box</option><option value="mixed balls and markers">Mixed balls and markers</option></select></label>
+              <label>Equipment available<select value={equipment} onChange={e => { setEquipment(e.target.value); setIdeaIndex(0); }}><option value="any">Any / flexible</option><option value="none">No special equipment</option><option value="a ball or balloon">Ball / soft ball</option><option value="cones or household objects">Cones / markers</option><option value="hula hoops or rope circles">Rings / hoops</option><option value="target equipment">Target / throwing equipment</option><option value="puzzle or cards">Puzzle / cards</option><option value="containers and cards">Boxes / containers + cards</option><option value="spoons and small ball">Spoons + small ball</option><option value="air and water equipment">Air pump / water-channel equipment</option><option value="music">Music</option><option value="chalk or paper cards">Chalk / paper cards</option><option value="basket or box">Basket / box</option><option value="mixed balls and markers">Mixed balls + markers</option></select></label>
               <label>Accessibility<select value={accessibility} onChange={e => { setAccessibility(e.target.value); setIdeaIndex(0); }}><option value="mixed">Mixed abilities</option><option value="low">Limited mobility</option><option value="wheelchair">Wheelchair-friendly</option><option value="sensory">Sensory-friendly</option><option value="norunning">No running / low impact</option><option value="younger">Younger children</option><option value="large">Large group</option><option value="outdoor">Outdoor/weather adaptable</option></select></label>
               <label>Intensity<select value={intensity} onChange={e => { setIntensity(e.target.value); setIdeaIndex(0); }}><option>Very low</option><option>Low</option><option>Medium</option><option>Active</option><option>High-energy</option></select></label>
             </div>
-            <p className="generator-source-note"><BookOpen size={18}/> These activities are generated based on the materials available in the Resource Library.</p>
+            <p className="generator-source-note"><BookOpen size={18}/> Suggestions are adapted from published Resource Library materials. Each result shows the source and, where available, the matching activity instruction video.</p>
           </div>
           <div className="result activity-card-output">
             <span className="badge">Generated activity card</span>
@@ -915,6 +441,12 @@ export default function Page() {
             </div>
             <p><strong>Goal:</strong> {activity.goal}</p>
             <p><strong>Equipment:</strong> {activity.equipment}</p>
+            <p className="activity-match"><Sparkles size={16}/> {activity.matchReason}</p>
+            <div className="activity-source-box">
+              <span><BookOpen size={17}/> Based on library material</span>
+              <a href={activity.sourceUrl} target="_blank" rel="noopener noreferrer">{activity.sourceTitle}</a>
+              {activity.videoUrl && <a href={activity.videoUrl} target="_blank" rel="noopener noreferrer">Watch activity instruction video</a>}
+            </div>
             <h4>How to play</h4>
             <ol>{activity.steps.map(step => <li key={step}>{step}</li>)}</ol>
             <div className="adapt-grid">
@@ -942,7 +474,7 @@ export default function Page() {
               <p><strong>Inclusive adaptation:</strong> {activity.adaptation}</p>
               <p><strong>Safety note:</strong> {activity.safety}</p>
             </div>
-            <p className="print-source">Generated based on materials available in the Resource Library.</p>
+            <p className="print-source">Based on Resource Library material: {activity.sourceTitle}</p>
           </article>
         </div>
       </section>
