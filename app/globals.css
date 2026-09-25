@@ -168,6 +168,13 @@ select, input, textarea { width:100%; padding: 13px 14px; border:1px solid var(-
   flex: 0 0 auto;
   margin-top: 2px;
 }
+.activity-match { display:flex; align-items:center; gap:7px; margin:10px 0 0; color:var(--deep); font-size:13px; font-weight:800; }
+.activity-match svg { color:var(--blue); flex:0 0 auto; }
+.activity-source-box { margin-top:14px; padding:13px 14px; border:1px solid rgba(7,137,200,.16); border-radius:16px; background:#f7fcff; display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; }
+.activity-source-box span { display:inline-flex; align-items:center; gap:6px; color:var(--deep); font-size:12px; font-weight:900; }
+.activity-source-box span svg { color:var(--blue); }
+.activity-source-box a { color:var(--blue); font-size:12px; font-weight:900; text-decoration:none; }
+.activity-source-box a:hover { text-decoration:underline; }
 .activity-card-output h4 { margin: 18px 0 8px; color: var(--deep); }
 .activity-card-output ol { padding-left: 20px; color: var(--muted); line-height: 1.66; }
 .activity-meta { display:flex; flex-wrap:wrap; gap:8px; margin: 10px 0 16px; }
