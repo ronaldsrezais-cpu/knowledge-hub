@@ -375,10 +375,12 @@ export default function Page() {
               {filteredResources.map((resource) => {
                 const downloadName = 'downloadName' in resource && typeof resource.downloadName === 'string' ? resource.downloadName : undefined;
                 const isDownload = Boolean(downloadName);
+                const isVideo = resource.resourceType === 'Video';
                 const cardContent = (
                   <>
-                    <div className="resource-visual resource-cover-wrap">
-                      <img className="resource-cover" src={resource.image} alt={`${resource.title} cover`} />
+                    <div className={`resource-visual resource-cover-wrap${isVideo ? ' resource-video-cover-wrap' : ''}`}>
+                      <img className={`resource-cover${isVideo ? ' resource-video-cover' : ''}`} src={resource.image} alt={`${resource.title} cover`} />
+                      {isVideo && <span className="resource-video-play" aria-hidden="true"><PlayCircle size={30}/></span>}
                     </div>
                     <div className="resource-body">
                       <div className="resource-tags"><span>{resource.resourceType}</span>{resource.topics.map(tag => <span key={tag}>{tag}</span>)}<span className="language-tag">Language: {resource.language}</span></div>
@@ -392,12 +394,12 @@ export default function Page() {
                 );
 
                 return resource.quizLink ? (
-                  <div className="resource-card resource-card-with-quiz" key={resource.title}>
+                  <div className={`resource-card resource-card-with-quiz${isVideo ? ' resource-card-video' : ''}`} key={resource.title}>
                     <a className="resource-card-primary-link" href={resource.file} target="_blank" rel="noopener noreferrer" aria-label={`Open ${resource.title}`} />
                     {cardContent}
                   </div>
                 ) : (
-                  <a className="resource-card" href={resource.file} target={isDownload ? undefined : "_blank"} rel="noopener noreferrer" download={downloadName} key={resource.title} aria-label={isDownload ? `Download ${resource.title}` : `Open ${resource.title}`}>
+                  <a className={`resource-card${isVideo ? ' resource-card-video' : ''}`} href={resource.file} target={isDownload ? undefined : "_blank"} rel="noopener noreferrer" download={downloadName} key={resource.title} aria-label={isDownload ? `Download ${resource.title}` : `Open ${resource.title}`}>
                     {cardContent}
                   </a>
                 );
