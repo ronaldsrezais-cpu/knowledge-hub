@@ -316,6 +316,7 @@ export default function Page() {
                         </div>
                       </div>
                       <div className="festival-media-links">
+                        <a href="https://www.youtube.com/watch?v=w4pCCzSPXC8" target="_blank" rel="noreferrer"><PlayCircle size={18}/> Watch the recap video</a>
                         <a href="https://www.facebook.com/lsfp.lv/posts/pfbid02tkiTxRsTg7t4XJVvDwKPeTNy45uva7v6JLxCNzCZFsTckNLqpfzkbquUG6xcomEnl" target="_blank" rel="noreferrer"><UsersRound size={18}/> View Festival photos</a>
                       </div>
                     </div>
