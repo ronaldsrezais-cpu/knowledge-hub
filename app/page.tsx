@@ -7,6 +7,7 @@ import {
   BookOpen,
   CalendarDays,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   ClipboardCheck,
   Download,
@@ -102,6 +103,7 @@ export default function Page() {
   const [audience, setAudience] = useState('All audiences');
   const [topic, setTopic] = useState('All topics');
   const [resourceType, setResourceType] = useState('All types');
+  const [resourcePage, setResourcePage] = useState(1);
   const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [submissionMessage, setSubmissionMessage] = useState('');
 
@@ -131,11 +133,26 @@ export default function Page() {
     });
   }, [query, audience, topic, resourceType]);
 
+  const resourcesPerPage = 8;
+  const totalResourcePages = Math.max(1, Math.ceil(filteredResources.length / resourcesPerPage));
+  const paginatedResources = filteredResources.slice(
+    (resourcePage - 1) * resourcesPerPage,
+    resourcePage * resourcesPerPage
+  );
+
+  const goToResourcePage = (page: number) => {
+    setResourcePage(Math.min(Math.max(page, 1), totalResourcePages));
+    requestAnimationFrame(() => {
+      document.querySelector('.resource-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
   const clearFilters = () => {
     setQuery('');
     setAudience('All audiences');
     setTopic('All topics');
     setResourceType('All types');
+    setResourcePage(1);
   };
 
   const handleMaterialSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -344,24 +361,24 @@ export default function Page() {
             <div className="search-filter-card compact-filters" aria-label="Resource search and filters">
               <label className="searchbox">
                 <Search size={20}/>
-                <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search resources by keyword, topic, audience, type or language…" />
+                <input value={query} onChange={(e) => { setQuery(e.target.value); setResourcePage(1); }} placeholder="Search resources by keyword, topic, audience, type or language…" />
               </label>
               <div className="dropdown-filters">
                 <label>
                   <span><Filter size={16}/> Audience</span>
-                  <select value={audience} onChange={(e) => setAudience(e.target.value)}>
+                  <select value={audience} onChange={(e) => { setAudience(e.target.value); setResourcePage(1); }}>
                     {audienceOptions.map((item) => <option key={item}>{item}</option>)}
                   </select>
                 </label>
                 <label>
                   <span>Topic</span>
-                  <select value={topic} onChange={(e) => setTopic(e.target.value)}>
+                  <select value={topic} onChange={(e) => { setTopic(e.target.value); setResourcePage(1); }}>
                     {topicOptions.map((item) => <option key={item}>{item}</option>)}
                   </select>
                 </label>
                 <label>
                   <span>Type</span>
-                  <select value={resourceType} onChange={(e) => setResourceType(e.target.value)}>
+                  <select value={resourceType} onChange={(e) => { setResourceType(e.target.value); setResourcePage(1); }}>
                     {typeOptions.map((item) => <option key={item}>{item}</option>)}
                   </select>
                 </label>
@@ -373,7 +390,7 @@ export default function Page() {
             </div>
 
             <div className="resource-grid">
-              {filteredResources.map((resource) => {
+              {paginatedResources.map((resource) => {
                 const downloadName = 'downloadName' in resource && typeof resource.downloadName === 'string' ? resource.downloadName : undefined;
                 const isDownload = Boolean(downloadName);
                 const isVideo = resource.resourceType === 'Video';
@@ -406,6 +423,40 @@ export default function Page() {
                 );
               })}
             </div>
+
+            {filteredResources.length > resourcesPerPage && (
+              <nav className="resource-pagination" aria-label="Resource library pages">
+                <button
+                  type="button"
+                  className="pagination-nav"
+                  onClick={() => goToResourcePage(resourcePage - 1)}
+                  disabled={resourcePage === 1}
+                >
+                  <ChevronLeft size={17}/> Previous
+                </button>
+                <div className="pagination-pages">
+                  {Array.from({ length: totalResourcePages }, (_, index) => index + 1).map((page) => (
+                    <button
+                      type="button"
+                      key={page}
+                      className={`pagination-page${resourcePage === page ? ' active' : ''}`}
+                      onClick={() => goToResourcePage(page)}
+                      aria-current={resourcePage === page ? 'page' : undefined}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="pagination-nav"
+                  onClick={() => goToResourcePage(resourcePage + 1)}
+                  disabled={resourcePage === totalResourcePages}
+                >
+                  Next <ChevronRight size={17}/>
+                </button>
+              </nav>
+            )}
 
             <div className="submit-callout">
               <div>
