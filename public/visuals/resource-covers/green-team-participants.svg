@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" role="img" aria-label="GUIDE FOR PARTICIPANTS - Green Team project">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8fcf6"/><stop offset="1" stop-color="#e6f4e5"/></linearGradient></defs>
+  <rect width="480" height="640" rx="18" fill="url(#g)"/>
+  <rect width="480" height="15" fill="#598a2d"/>
+  <path d="M310 0h170v252c-96-42-138-97-170-252z" fill="#67bb82" opacity=".75"/>
+  <path d="M0 440c170-90 315-30 480-136v336H0z" fill="#d0e9cf"/>
+  <path d="M0 520c200-100 320-38 480-100v220H0z" fill="#a5d29d" opacity=".62"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#345f1c">
+   <text x="34" y="63" font-size="37" font-weight="800">Green</text>
+   <text x="149" y="63" font-size="37" font-weight="800" fill="#a87913">Team</text>
+   <text x="36" y="100" font-size="15" font-weight="700" letter-spacing="2" fill="#64765e">PARTICIPANTS & VOLUNTEERS</text>
+   <text x="36" y="212" font-size="31" font-weight="800">GUIDE FOR</text>
+   <text x="36" y="260" font-size="31" font-weight="800">PARTICIPANTS</text>
+   <text x="36" y="331" font-size="22" fill="#365e30">Sustainable & Inclusive</text>
+   <text x="36" y="364" font-size="24" font-weight="700" fill="#365e30">Sports Events</text>
+   <text x="36" y="600" font-size="17" font-weight="700">GREEN TEAM · ERASMUS+</text>
+   <text x="36" y="622" font-size="12" fill="#4d6947">Practical guidance · English</text>
+  </g>
+  <g fill="none" stroke="#598a2d" stroke-width="9" opacity=".20"><circle cx="380" cy="500" r="74"/><circle cx="380" cy="500" r="47"/></g>
+  <path d="M376 468v34l21 19" fill="none" stroke="#67bb82" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
