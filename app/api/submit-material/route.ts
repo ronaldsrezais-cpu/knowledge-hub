@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 
 const TO_EMAIL = process.env.SUBMISSION_TO_EMAIL || 'ronalds.rezais@lsfp.lv';
-const MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_ATTACHMENT_SIZE = 4 * 1024 * 1024; // 4 MB: below Vercel's 4.5 MB request limit
 const allowedMaterialTypes = ['Document', 'Video', 'Photos'];
 
 function getText(formData: FormData, key: string) {
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
     if (hasFile) {
       if (submittedFile.size > MAX_ATTACHMENT_SIZE) {
-        return NextResponse.json({ error: 'The uploaded file is too large. Please upload a file up to 10 MB or provide a link instead.' }, { status: 400 });
+        return NextResponse.json({ error: 'The uploaded file is too large. Please upload a file up to 4 MB or provide a public link instead.' }, { status: 400 });
       }
 
       const buffer = Buffer.from(await submittedFile.arrayBuffer());
