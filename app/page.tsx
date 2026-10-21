@@ -159,6 +159,16 @@ export default function Page() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    const submittedFile = data.get('materialFile');
+    const maxFileBytes = 4 * 1024 * 1024;
+
+    // Vercel rejects incoming Function requests over 4.5 MB before this API route can respond.
+    // Keep a margin for multipart/form-data fields and avoid losing the entire submission.
+    if (submittedFile instanceof File && submittedFile.size > maxFileBytes) {
+      setSubmissionStatus('error');
+      setSubmissionMessage(`This file is ${(submittedFile.size / (1024 * 1024)).toFixed(1)} MB. The maximum attachment size is 4 MB. Please share a public link to the document instead, or upload a smaller PDF.`);
+      return;
+    }
 
     setSubmissionStatus('sending');
     setSubmissionMessage('');
@@ -169,9 +179,13 @@ export default function Page() {
         body: data,
       });
 
-      const result = await response.json().catch(() => ({}));
+      if (response.status === 413) {
+        throw new Error('The upload is too large for the server. Please use a PDF smaller than 4 MB or provide a public link to the material instead.');
+      }
+
+      const result = await response.json().catch(() => null);
       if (!response.ok) {
-        throw new Error(result.error || 'The submission could not be sent. Please try again later.');
+        throw new Error(result?.error || `The submission could not be sent (HTTP ${response.status}). Please try a smaller file or a public link, and contact the project team if the error continues.`);
       }
 
       form.reset();
@@ -544,7 +558,7 @@ export default function Page() {
               <ShieldCheck size={22}/>
               <p><strong>Review before publication:</strong> submitted materials will be reviewed by the Home & Heart project team before they are uploaded to the Resource Library.</p>
             </div>
-            <p className="small-note">For large videos or photo galleries, please add a public link instead of uploading a large file.</p>
+            <p className="small-note">For videos, photo galleries or documents larger than 4 MB, please provide a public link rather than uploading the file.</p>
           </div>
 
           <form className="submission-form" onSubmit={handleMaterialSubmit}>
@@ -581,7 +595,7 @@ export default function Page() {
               <label>Material type<select name="materialType" required defaultValue="Document"><option>Document</option><option>Video</option><option>Photos</option></select></label>
             </div>
 
-            <label>Upload file<input name="materialFile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.mp4,.mov,.zip" /></label>
+            <label>Upload file (maximum 4 MB)<input name="materialFile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.mp4,.mov,.zip" /></label>
             <label>Link to material, video or photo gallery<input name="materialLink" type="url" placeholder="https://..." /></label>
 
             <label className="consent-line"><input name="reviewConsent" type="checkbox" required /> I understand that the material will be reviewed before it is published in the Resource Library.</label>
